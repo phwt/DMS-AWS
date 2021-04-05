@@ -14,22 +14,22 @@ model Document {
   id    Int           @id @default(autoincrement())
   name  String
   type  DocumentType
-  state DocumentState @default(value: IN)
+  state DocumentState @default(value: IN_PROGRESS)
   Work  Work[]
 }
 
 enum DocumentType {
-  M
-  P
-  W
-  F
+  MANUAL
+  PROCEDURE
+  WORK_INSTRUCTION
+  FORM
 }
 
 enum DocumentState {
-  IN
-  RE
-  OB
-  RC
+  IN_PROGRESS
+  RELEASED
+  OBSOLETE
+  RECALLED
 }
 
 model Work {
