@@ -1,6 +1,4 @@
-import "../styles/globals.css";
-import "bootstrap/scss/bootstrap.scss";
-import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
+import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   return (
