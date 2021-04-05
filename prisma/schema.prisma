@@ -11,17 +11,46 @@ generator client {
 }
 
 model Document {
-  id    Int @default(autoincrement()) @id
+  id    Int           @id @default(autoincrement())
   name  String
-  type  String
-  state String
+  type  DocumentType
+  state DocumentState @default(value: IN)
+  Work  Work[]
+}
+
+enum DocumentType {
+  M
+  P
+  W
+  F
+}
+
+enum DocumentState {
+  IN
+  RE
+  OB
+  RC
 }
 
 model Work {
-  id             Int @default(autoincrement()) @id
-  type           String
-  state          String
-  detail         String
-  create_date    DateTime
-  complete_date  DateTime
+  id            Int       @id @default(autoincrement())
+  type          WorkType  @default(value: CREATE)
+  state         WorkState @default(value: NEW)
+  detail        String
+  create_date   DateTime  @default(now())
+  complete_date DateTime?
+  documentId    Int
+  document      Document  @relation(fields: [documentId], references: [id])
+}
+
+enum WorkType {
+  CREATE
+  EDIT
+  CANCLE
+}
+
+enum WorkState {
+  NEW
+  REVIEW
+  COMPLETED
 }
