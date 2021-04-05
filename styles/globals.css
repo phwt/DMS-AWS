@@ -1,16 +1,115 @@
-html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: #00ff00;
+  /*background-image: url("/static/img/nav_bg.jpg");*/
+  /*background-repeat: no-repeat;*/
+  /*background-attachment: fixed;*/
+  /*background-position: center top;*/
+}
+
+.shadow {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+.form-control-sm-select {
+  height: calc(1.5em + 0.5rem + 2px) !important;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #000000;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: white;
 }
 
-* {
-  box-sizing: border-box;
+a:hover {
+  color: gray;
+}
+
+tr:nth-child(even) {
+  background-color: #161616;
+}
+
+.shadow {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.round {
+  border-radius: 5px;
+}
+
+.bg-19 {
+  background-color: #191919;
+}
+
+.bg-16 {
+  background-color: #161616;
+}
+
+.bg-0 {
+  background-color: #000000;
+}
+
+.center-cnt {
+  min-height: 75vh;
+}
+
+.table-mh {
+  min-height: 55vh;
+  overflow: visible;
+}
+
+.table td.fit,
+.table th.fit {
+  white-space: nowrap;
+  width: 1%;
+}
+.card-inter {
+  border-left: 0.25rem solid #ffffff !important;
+  cursor: pointer;
+}
+.card-in {
+  border-left: 0.25rem solid #17a2b8 !important;
+  cursor: pointer;
+}
+.card-re {
+  border-left: 0.25rem solid #28a745 !important;
+  cursor: pointer;
+}
+.card-ob {
+  border-left: 0.25rem solid #dc3545 !important;
+  cursor: pointer;
+}
+
+.card-pointer {
+  cursor: pointer;
+}
+
+.card-inter:hover,
+.card-in:hover,
+.card-re:hover,
+.card-ob:hover,
+.card-pointer:hover {
+  transition: 500ms;
+  transform: rotate(3deg);
+}
+
+.progress-link {
+  display: inline-block;
+  width: 50px;
+  height: 3px;
+  position: relative;
+  top: -3px;
+  margin-left: -4px;
+  margin-right: -7px;
+  z-index: 0;
 }
