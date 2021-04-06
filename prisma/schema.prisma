@@ -15,7 +15,7 @@ model Document {
   name  String
   type  String
   state String @default("IN_PROGRESS")
-  Work  Work[]
+  Work  Work?
 }
 
 //enum DocumentType {
