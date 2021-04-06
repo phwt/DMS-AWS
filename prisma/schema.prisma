@@ -39,8 +39,8 @@ model Work {
   detail        String
   create_date   DateTime  @default(now())
   complete_date DateTime?
-  documentId    Int
-  document      Document  @relation(fields: [documentId], references: [id])
+  documentId    Int?
+  document      Document? @relation(fields: [documentId], references: [id])
 }
 
 //enum WorkType {
