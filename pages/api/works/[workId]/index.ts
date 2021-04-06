@@ -15,6 +15,9 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           id: parseInt(<string>query.workId),
         },
+        include: {
+          document: true,
+        },
       });
 
       res.status(200).json(result);

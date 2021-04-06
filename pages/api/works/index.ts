@@ -11,7 +11,11 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case "GET":
-      result = await prisma.work.findMany();
+      result = await prisma.work.findMany({
+        include: {
+          document: true,
+        },
+      });
 
       res.status(200).json(result);
       break;
