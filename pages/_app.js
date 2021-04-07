@@ -58,7 +58,7 @@ function MyApp({ Component, pageProps }) {
                   <li className="nav-item dropdown">
                     <a
                       className="nav-link dropdown-toggle"
-                      href="/document"
+                      href="/documents"
                       role="button"
                       data-toggle="dropdown"
                     >
@@ -71,38 +71,38 @@ function MyApp({ Component, pageProps }) {
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         View All
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         View: In-Progress
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         View: Released
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         View: Obsoleted
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         View: Recalled
                       </a>
                       <div className="dropdown-divider" />
                       <a
                         className="dropdown-item text-dark"
-                        href="/document"
+                        href="/documents"
                       >
                         Create Document&nbsp;&nbsp;
                         <i className="fa fa-plus-square" aria-hidden="true" />
@@ -153,7 +153,7 @@ function MyApp({ Component, pageProps }) {
                     <div className="dropdown-menu">
                       <a
                         className="dropdown-item text-dark"
-                        href="/work"
+                        href="/works"
                       >
                         <i className="fa fa-th-list" aria-hidden="true" />
                         &nbsp;&nbsp;Work List
