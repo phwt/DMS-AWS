@@ -1,4 +1,5 @@
 import "../styles/globals.scss";
+import React from "react";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -7,9 +8,9 @@ function MyApp({ Component, pageProps }) {
         <div className="col-0 col-lg-2" />
         <div className="col-12 col-lg-8">
           <nav className="navbar navbar-expand-lg navbar-dark">
-            <a className="navbar-brand" href="% url 'index' %}">
+            <a className="navbar-brand" href="/">
               <img
-                src="{% static '/img/dms_logo.png' %}"
+                src="dms_logo.png"
                 width="30"
                 height="30"
                 className="d-inline-block align-top"
@@ -50,14 +51,14 @@ function MyApp({ Component, pageProps }) {
               <span className="navbar-text">
                 <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
-                    <a className="nav-link" href="{% url 'index' %}">
+                    <a className="nav-link" href="/">
                       Dashboard
                     </a>
                   </li>
                   <li className="nav-item dropdown">
                     <a
                       className="nav-link dropdown-toggle"
-                      href="#"
+                      href="/document"
                       role="button"
                       data-toggle="dropdown"
                     >
@@ -70,57 +71,57 @@ function MyApp({ Component, pageProps }) {
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="{% url 'internal_doc' %}"
+                        href="/document"
                       >
                         View All
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="{% url 'internal_doc' %}?state=IN"
+                        href="/document"
                       >
                         View: In-Progress
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="{% url 'internal_doc' %}?state=RE"
+                        href="/document"
                       >
                         View: Released
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="{% url 'internal_doc' %}?state=OB"
+                        href="/document"
                       >
                         View: Obsoleted
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="{% url 'internal_doc' %}?state=RC"
+                        href="/document"
                       >
                         View: Recalled
                       </a>
                       <div className="dropdown-divider" />
                       <a
                         className="dropdown-item text-dark"
-                        href="% url 'work_create' %}"
+                        href="/document"
                       >
                         Create Document&nbsp;&nbsp;
                         <i className="fa fa-plus-square" aria-hidden="true" />
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="% url 'work_edit' %}"
+                        href=""
                       >
                         Edit Document&nbsp;&nbsp;
                         <i className="fa fa-pencil-square" aria-hidden="true" />
                       </a>
                       <a
                         className="dropdown-item text-dark"
-                        href="% url 'work_cancel' %}"
+                        href=""
                       >
                         Cancel Document&nbsp;&nbsp;
                         <i className="fa fa-minus-square" aria-hidden="true" />
                       </a>
-                      <div className="dropdown-divider" />
+                      {/* <div className="dropdown-divider" />
                       <a className="dropdown-item text-dark disabled font-weight-bold">
                         <i className="fa fa-file-text" aria-hidden="true" />
                         &nbsp;&nbsp;External Document
@@ -137,7 +138,7 @@ function MyApp({ Component, pageProps }) {
                       >
                         Add Document&nbsp;&nbsp;
                         <i className="fa fa-plus-square" aria-hidden="true" />
-                      </a>
+                      </a> */}
                     </div>
                   </li>
                   <li className="nav-item dropdown">
@@ -152,18 +153,18 @@ function MyApp({ Component, pageProps }) {
                     <div className="dropdown-menu">
                       <a
                         className="dropdown-item text-dark"
-                        href="% url 'work_list' %}"
+                        href="/work"
                       >
                         <i className="fa fa-th-list" aria-hidden="true" />
                         &nbsp;&nbsp;Work List
                       </a>
-                      <a
+                      {/* <a
                         className="dropdown-item text-dark"
                         href="% url 'work_list' %}?employee={{ request.user.employee.id }}"
                       >
                         <i className="fa fa-briefcase" aria-hidden="true" />
                         &nbsp;&nbsp;My Work
-                      </a>
+                      </a> */}
                     </div>
                   </li>
                   <li className="nav-item d-lg-inline d-none">
