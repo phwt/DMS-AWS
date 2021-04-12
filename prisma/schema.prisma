@@ -11,11 +11,12 @@ generator client {
 }
 
 model Document {
-  id    Int    @id @default(autoincrement())
-  name  String
-  type  String
-  state String @default("IN_PROGRESS")
-  Work  Work?
+  id           Int    @id @default(autoincrement())
+  name         String
+  type         String
+  state        String @default("IN_PROGRESS")
+  fileLocation String
+  Work         Work?
 }
 
 //enum DocumentType {
