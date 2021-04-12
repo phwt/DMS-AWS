@@ -1,18 +1,47 @@
 import { Col, Form, Row } from "react-bootstrap";
+import React, { useCallback, useState } from "react";
+import axios from "axios";
 
 const DocumentNew = () => {
+  const [name, setName] = useState("");
+  const [type, setType] = useState("MANUAL");
+  const [detail, setDetail] = useState("");
+  const [file, setFile] = useState<File>();
+
+  const submitRequest = useCallback(async () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("type", type);
+    formData.append("detail", detail);
+
+    await axios.post("/api/documents/new", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }, [name, type, detail, file]);
+
   return (
     <>
       <h2 className="pb-5">Document Creation Form</h2>
       <Form as={Row} encType="multipart/form-data">
         <Col md={6}>
           <Form.Label>Document Name</Form.Label>
-          <Form.Control />
+          <Form.Control
+            value={name}
+            onChange={({ target: { value } }) => setName(value)}
+          />
         </Col>
 
         <Col md={6}>
           <Form.Label>Document Type</Form.Label>
-          <Form.Control as="select" custom>
+          <Form.Control
+            as="select"
+            custom
+            value={type}
+            onChange={({ target: { value } }) => setType(value)}
+          >
             <option value="MANUAL">Manual</option>
             <option value="PROCEDURE">Procedure</option>
             <option value="WORK_INSTRUCTION">Work Instruction</option>
@@ -22,21 +51,32 @@ const DocumentNew = () => {
 
         <Col md={12} className="mt-2">
           <Form.Label>Document File</Form.Label>
-          <div className="custom-file">
-            <input type="file" className="custom-file-input" />
-            <label className="custom-file-label" htmlFor="customFile">
-              Choose file
-            </label>
-          </div>
+          <Form.File
+            label="Choose file"
+            custom
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setFile(Array.from(e.target.files)[0]);
+            }}
+          />
         </Col>
 
         <Col md={12} className="mt-2">
           <Form.Label>Work Detail</Form.Label>
-          <Form.Control as="textarea" rows={3} />
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={detail}
+            onChange={({ target: { value } }) => setDetail(value)}
+          />
         </Col>
 
         <Col md={12}>
-          <input type="submit" className="btn btn-info mt-3" value="Submit" />
+          <input
+            type="button"
+            className="btn btn-info mt-3"
+            value="Submit"
+            onClick={submitRequest}
+          />
         </Col>
       </Form>
     </>
