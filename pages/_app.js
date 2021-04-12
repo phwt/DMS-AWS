@@ -69,55 +69,31 @@ function MyApp({ Component, pageProps }) {
                         <i className="fa fa-file-text" aria-hidden="true" />
                         &nbsp;&nbsp;Internal Document
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         View All
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         View: In-Progress
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         View: Released
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         View: Obsoleted
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         View: Recalled
                       </a>
                       <div className="dropdown-divider" />
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents"
-                      >
+                      <a className="dropdown-item text-dark" href="/documents">
                         Create Document&nbsp;&nbsp;
                         <i className="fa fa-plus-square" aria-hidden="true" />
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href=""
-                      >
+                      <a className="dropdown-item text-dark" href="">
                         Edit Document&nbsp;&nbsp;
                         <i className="fa fa-pencil-square" aria-hidden="true" />
                       </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href=""
-                      >
+                      <a className="dropdown-item text-dark" href="">
                         Cancel Document&nbsp;&nbsp;
                         <i className="fa fa-minus-square" aria-hidden="true" />
                       </a>
@@ -151,10 +127,7 @@ function MyApp({ Component, pageProps }) {
                       Work
                     </a>
                     <div className="dropdown-menu">
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/works"
-                      >
+                      <a className="dropdown-item text-dark" href="/works">
                         <i className="fa fa-th-list" aria-hidden="true" />
                         &nbsp;&nbsp;Work List
                       </a>

@@ -8,11 +8,17 @@ const DocumentList = () => {
         </div>
         <div className="col-6 text-right">
           Request to&nbsp;&nbsp;&nbsp;
-		<a href="{% url 'work_create' %}" className="btn btn-sm btn-success"><i
-            className="fa fa-plus"></i>&nbsp;&nbsp;Create</a>&nbsp;
-          <a href="{% url 'work_edit' %}" className="btn btn-sm btn-info"><i className="fa fa-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;
-          <a href="{% url 'work_cancel' %}" className="btn btn-sm btn-danger"><i
-            className="fa fa-minus"></i>&nbsp;&nbsp;Cancel</a>
+          <a href="{% url 'work_create' %}" className="btn btn-sm btn-success">
+            <i className="fa fa-plus"></i>&nbsp;&nbsp;Create
+          </a>
+          &nbsp;
+          <a href="{% url 'work_edit' %}" className="btn btn-sm btn-info">
+            <i className="fa fa-pencil"></i>&nbsp;&nbsp;Edit
+          </a>
+          &nbsp;
+          <a href="{% url 'work_cancel' %}" className="btn btn-sm btn-danger">
+            <i className="fa fa-minus"></i>&nbsp;&nbsp;Cancel
+          </a>
         </div>
       </div>
       <form method="GET" action="">
@@ -21,8 +27,12 @@ const DocumentList = () => {
             <thead className="bg-0">
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col" className="fit">Version</th>
-                <th scope="col" className="fit">Running No</th>
+                <th scope="col" className="fit">
+                  Version
+                </th>
+                <th scope="col" className="fit">
+                  Running No
+                </th>
                 <th scope="col">Type</th>
                 <th scope="col">State</th>
                 <th scope="col">Parent Doc</th>
@@ -58,7 +68,10 @@ const DocumentList = () => {
               {/* check state */}
               {/* {% if doc.get_state_display == 'Released' %}  */}
               <td>
-                <span className="badge badge-pill badge-success"> doc.get_state_display </span>
+                <span className="badge badge-pill badge-success">
+                  {" "}
+                  doc.get_state_display{" "}
+                </span>
               </td>
               {/* {% elif doc.get_state_display == 'In-Progress' %}
 				<td>
@@ -81,17 +94,23 @@ const DocumentList = () => {
               <td>
                 <a href="{% url 'doc_detail' id=doc.parent_doc.id %}">
                   doc.parent_doc.name
-					</a>
+                </a>
               </td>
               {/* {% endif %} */}
               <td> doc.dept_name </td>
               <td>
-                <a href="{% url 'profile-other' id=doc.creator.id %}"> doc.creator </a>
+                <a href="{% url 'profile-other' id=doc.creator.id %}">
+                  {" "}
+                  doc.creator{" "}
+                </a>
               </td>
               <td>
                 <a href="{% url 'doc_detail' id=doc.id %}">
                   <button type="button" className="btn btn-block">
-                    <i className="fa fa-chevron-right text-info" aria-hidden="true"></i>
+                    <i
+                      className="fa fa-chevron-right text-info"
+                      aria-hidden="true"
+                    ></i>
                   </button>
                 </a>
               </td>
