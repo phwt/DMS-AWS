@@ -101,11 +101,16 @@ tr:nth-child(even) {
   cursor: pointer;
 }
 
+.summary-card {
+  cursor: pointer;
+}
+
 .card-inter:hover,
 .card-in:hover,
 .card-re:hover,
 .card-ob:hover,
-.card-pointer:hover {
+.card-pointer:hover,
+.summary-card:hover {
   transition: 500ms;
   transform: rotate(3deg);
 }
