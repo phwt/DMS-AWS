@@ -1,5 +1,6 @@
 import "../styles/globals.scss";
 import React from "react";
+import Link from "next/link";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -51,9 +52,9 @@ function MyApp({ Component, pageProps }) {
               <span className="navbar-text">
                 <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
-                    <a className="nav-link" href="/">
-                      Dashboard
-                    </a>
+                    <Link href="/">
+                      <a className="nav-link">Dashboard</a>
+                    </Link>
                   </li>
                   <li className="nav-item dropdown">
                     <a
@@ -65,53 +66,36 @@ function MyApp({ Component, pageProps }) {
                       Document
                     </a>
                     <div className="dropdown-menu">
-                      <a className="dropdown-item text-dark" href="/documents">
-                        <i className="fa fa-file mr-2" aria-hidden="true" />
-                        Document List
-                      </a>
+                      <Link href="/documents">
+                        <a className="dropdown-item text-dark">
+                          <i className="fa fa-file mr-2" aria-hidden="true" />
+                          Document List
+                        </a>
+                      </Link>
                       <div className="dropdown-divider" />
-                      <a
-                        className="dropdown-item text-dark"
-                        href="/documents/new"
-                      >
-                        <i
-                          className="fa fa-plus-square mr-2"
-                          aria-hidden="true"
-                        />
-                        Create Document
-                      </a>
-                      <a className="dropdown-item text-dark" href="">
+                      <Link href="/documents/new">
+                        <a className="dropdown-item text-dark">
+                          <i
+                            className="fa fa-plus-square mr-2"
+                            aria-hidden="true"
+                          />
+                          Create Document
+                        </a>
+                      </Link>
+                      <a className="dropdown-item text-dark">
                         <i
                           className="fa fa-pen-square mr-2"
                           aria-hidden="true"
                         />
                         Edit Document
                       </a>
-                      <a className="dropdown-item text-dark" href="">
+                      <a className="dropdown-item text-dark">
                         <i
                           className="fa fa-minus-square mr-2"
                           aria-hidden="true"
                         />
                         Cancel Document
                       </a>
-                      {/* <div className="dropdown-divider" />
-                      <a className="dropdown-item text-dark disabled font-weight-bold">
-                        <i className="fa fa-file-text" aria-hidden="true" />
-                        &nbsp;&nbsp;External Document
-                      </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="% url 'external_doc' %}"
-                      >
-                        View All
-                      </a>
-                      <a
-                        className="dropdown-item text-dark"
-                        href="% url 'external_add' %}"
-                      >
-                        Add Document&nbsp;&nbsp;
-                        <i className="fa fa-plus-square" aria-hidden="true" />
-                      </a> */}
                     </div>
                   </li>
                   <li className="nav-item dropdown">
@@ -124,17 +108,15 @@ function MyApp({ Component, pageProps }) {
                       Work
                     </a>
                     <div className="dropdown-menu">
-                      <a className="dropdown-item text-dark" href="/works">
-                        <i className="fa fa-th-list mr-2" aria-hidden="true" />
-                        Work List
-                      </a>
-                      {/* <a
-                        className="dropdown-item text-dark"
-                        href="% url 'work_list' %}?employee={{ request.user.employee.id }}"
-                      >
-                        <i className="fa fa-briefcase" aria-hidden="true" />
-                        &nbsp;&nbsp;My Work
-                      </a> */}
+                      <Link href="/works">
+                        <a className="dropdown-item text-dark">
+                          <i
+                            className="fa fa-th-list mr-2"
+                            aria-hidden="true"
+                          />
+                          Work List
+                        </a>
+                      </Link>
                     </div>
                   </li>
                   <li className="nav-item d-lg-inline d-none">
