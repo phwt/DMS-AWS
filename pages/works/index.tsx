@@ -44,7 +44,7 @@ const WorkList = ({ works }) => {
               <td />
               <td>
                 {/* TODO: Live filter by type and state */}
-                <Form.Control as="select" size="sm" />{" "}
+                <Form.Control as="select" size="sm" />
               </td>
               <td>
                 <Form.Control as="select" size="sm" />
