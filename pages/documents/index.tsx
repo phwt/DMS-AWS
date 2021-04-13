@@ -1,10 +1,50 @@
-const DocumentList = () => {
+import axios from "axios";
+import { Form } from "react-bootstrap";
+import { useCallback } from "react";
+
+export const getServerSideProps = async (ctx) => {
+  const { data } = await axios.get(`${process.env.API_PATH}documents/`);
+
+  return {
+    props: {
+      documents: data,
+    },
+  };
+};
+
+const DocumentList = ({ documents }) => {
+  const documentTypeText = useCallback((type) => {
+    switch (type) {
+      case "MANUAL":
+        return "Manual";
+      case "PROCEDURE":
+        return "Procedure";
+      case "WORK_INSTRUCTION":
+        return "Work Instruction";
+      case "FORM":
+        return "Form";
+    }
+  }, []);
+
+  const documentStateBadge = useCallback((state) => {
+    switch (state) {
+      case "IN_PROGRESS":
+        return <span className="badge badge-pill badge-info">In-Progress</span>;
+      case "RELEASED":
+        return <span className="badge badge-pill badge-success">Released</span>;
+      case "OBSOLETE":
+        return <span className="badge badge-pill badge-danger">Obsolete</span>;
+      case "RECALLED":
+        return <span className="badge badge-pill badge-warning">Recalled</span>;
+    }
+  }, []);
+
   return (
     <>
       {/* {% block title %}{{ doc_type|title }} Document List{% endblock %} */}
       <div className="row no-gutters">
         <div className="col-6">
-          <h2 className="pb-5">View Internal Documents</h2>
+          <h2 className="pb-5">View Documents</h2>
         </div>
         <div className="col-6 text-right">
           Request to&nbsp;&nbsp;&nbsp;
@@ -21,104 +61,45 @@ const DocumentList = () => {
           </a>
         </div>
       </div>
-      <form method="GET" action="">
-        <div className="table-res ponsive table-mh">
-          <table className="table table-borderless text-light">
-            <thead className="bg-0">
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col" className="fit">
-                  Version
-                </th>
-                <th scope="col" className="fit">
-                  Running No
-                </th>
-                <th scope="col">Type</th>
-                <th scope="col">State</th>
-                <th scope="col">Parent Doc</th>
-                <th scope="col">Department</th>
-                <th scope="col">Creator</th>
-                <th></th>
-              </tr>
-            </thead>
+
+      <div className="table-responsive table-mh">
+        <table className="table table-borderless text-light">
+          <thead className="bg-0">
             <tr>
-              <td> filter.name </td>
-              <td className="fit"> filter.version </td>
-              <td className="fit"> filter.running_no </td>
-              <td> filter.type </td>
-              <td> filter.state </td>
-              <td> filter.parent_doc </td>
-              <td> filter.department </td>
-              <td> filter.creator </td>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">State</th>
+              <th />
+            </tr>
+          </thead>
+          <tr>
+            <td />
+            <td>
+              <Form.Control as="select" size="sm" />
+            </td>
+            <td>
+              <Form.Control as="select" size="sm" />
+            </td>
+            <td />
+          </tr>
+
+          {documents.map((document) => (
+            <tr>
+              <td>{document.name}</td>
+              <td>{documentTypeText(document.type)}</td>
+              <td>{documentStateBadge(document.state)}</td>
               <td>
-                <button type="submit" className="btn btn-info btn-block">
-                  <i className="fa fa-search" aria-hidden="true"></i>
+                <button type="button" className="btn btn-block">
+                  <i
+                    className="fa fa-chevron-right text-info"
+                    aria-hidden="true"
+                  />
                 </button>
               </td>
             </tr>
-            {/* {% for document in documents %} loop Document List */}
-            <tr>
-              <td>
-                <a href="{% url 'doc_detail' id=document.id %}"> doc.name </a>
-              </td>
-              <td className="fit text-center"> doc.version </td>
-              <td className="fit text-center"> doc.running_no </td>
-              <td> doc.get_type_display </td>
-
-              {/* check state */}
-              {/* {% if doc.get_state_display == 'Released' %}  */}
-              <td>
-                <span className="badge badge-pill badge-success">
-                  {" "}
-                  doc.get_state_display{" "}
-                </span>
-              </td>
-              {/* {% elif doc.get_state_display == 'In-Progress' %}
-				<td>
-					<span className="badge badge-pill badge-info"> doc.get_state_display </span>
-				</td>
-				{% elif doc.get_state_display == 'Obsoleted' %}
-				<td>
-					<span className="badge badge-pill badge-danger"> doc.get_state_display </span>
-				</td>
-				{% elif doc.get_state_display == 'Recalled' %}
-				<td>
-					<span className="badge badge-pill badge-warning"> doc.get_state_display </span>
-				</td>
-				{% endif %} */}
-
-              {/* check parent null */}
-              {/* {% if doc.parent_doc.id == null %}
-				<td>-</td>
-				{% else %} */}
-              <td>
-                <a href="{% url 'doc_detail' id=doc.parent_doc.id %}">
-                  doc.parent_doc.name
-                </a>
-              </td>
-              {/* {% endif %} */}
-              <td> doc.dept_name </td>
-              <td>
-                <a href="{% url 'profile-other' id=doc.creator.id %}">
-                  {" "}
-                  doc.creator{" "}
-                </a>
-              </td>
-              <td>
-                <a href="{% url 'doc_detail' id=doc.id %}">
-                  <button type="button" className="btn btn-block">
-                    <i
-                      className="fa fa-chevron-right text-info"
-                      aria-hidden="true"
-                    ></i>
-                  </button>
-                </a>
-              </td>
-            </tr>
-            {/* {% endfor %} */}
-          </table>
-        </div>
-      </form>
+          ))}
+        </table>
+      </div>
 
       {/* {% if documents.has_other_pages %}
 <nav>
