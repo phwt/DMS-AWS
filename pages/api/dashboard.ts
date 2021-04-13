@@ -81,6 +81,9 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
         id: "desc",
       },
       take: 10,
+      include: {
+        document: true,
+      },
     });
   };
 

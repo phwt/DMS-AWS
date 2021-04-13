@@ -104,20 +104,7 @@ const Dashboard = ({ dashboard }) => {
         {/* {# Document list last 10 #} */}
         <div className="col-12 col-lg-6">
           <div className="bg-0 pl-3 pr-1 pt-2 mt-3">
-            <div className="row">
-              <div className="col-6">
-                <h4 className="m-0">Internal</h4>
-                <h4 className="m-0">Document</h4>
-              </div>
-              <div className="col-6 text-right">
-                <button
-                  onClick="updateInternalTable()"
-                  className="btn text-muted"
-                >
-                  <i className="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
+            <h4 className="m-0">Documents</h4>
             <p className="m-0 text-muted">Latest 10 Documents</p>
           </div>
           <table className="table table-borderless text-light" id="internal">
@@ -129,41 +116,13 @@ const Dashboard = ({ dashboard }) => {
               </tr>
             </thead>
             <tbody>
-              {/* {% for document in documents %} {# table internal doucument list in dashboard #} */}
-              <tr>
-                <td>
-                  <a href="{% url 'doc_detail' id=document.id %}">
-                    document.name|truncatechars:35
-                  </a>
-                </td>
-                <td>document.get_type_display</td>
-                {/* {% if document.get_state_display == 'Released' %} */}
-                <td>
-                  <span className="badge badge-pill badge-success">
-                    document.get_state_display
-                  </span>
-                </td>
-                {/* {% elif document.get_state_display == 'In-Progress' %} */}
-                <td>
-                  <span className="badge badge-pill badge-info">
-                    document.get_state_display
-                  </span>
-                </td>
-                {/* {% elif document.get_state_display == 'Obsoleted' %} */}
-                <td>
-                  <span className="badge badge-pill badge-danger">
-                    document.get_state_display
-                  </span>
-                </td>
-                {/* {% elif document.get_state_display == 'Recalled' %} */}
-                <td>
-                  <span className="badge badge-pill badge-warning">
-                    document.get_state_display
-                  </span>
-                </td>
-                {/* {% endif %} */}
-              </tr>
-              {/* {% endfor %} */}
+              {dashboard.latestDocuments.all.map((document) => (
+                <tr>
+                  <td>{document.name}</td>
+                  <td>{document.type}</td>
+                  <td>{document.state}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -171,20 +130,8 @@ const Dashboard = ({ dashboard }) => {
         {/* {# Document In-Progress last 10 #} */}
         <div className="col-6 col-lg-3">
           <div className="bg-0 pl-3 pr-1 pt-2 mt-3">
-            <div className="row">
-              <div className="col-9 pr-0">
-                <h4>Internal Document</h4>
-                <span className="badge badge-pill badge-info">In-Progress</span>
-              </div>
-              <div className="col-3 pl-0 text-right">
-                <button
-                  onClick="updateInternalTable()"
-                  className="btn text-muted"
-                >
-                  <i className="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
+            <h4>Documents</h4>
+            <span className="badge badge-pill badge-info">In-Progress</span>
           </div>
           <table className="table table-borderless text-light" id="progress">
             <thead className="bg-0">
@@ -194,16 +141,12 @@ const Dashboard = ({ dashboard }) => {
               </tr>
             </thead>
             <tbody>
-              {/* {% for document_in in documents_in %} {# Inprogress #} */}
-              <tr>
-                <td>
-                  <a href="{% url 'doc_detail' id=document_in.id %}">
-                    document_in.name|truncatechars:20
-                  </a>
-                </td>
-                <td className="text-center">document_in.type</td>
-              </tr>
-              {/* {% endfor %} */}
+              {dashboard.latestDocuments.inProgress.map((document) => (
+                <tr>
+                  <td>{document.name}</td>
+                  <td>{document.type}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -211,20 +154,8 @@ const Dashboard = ({ dashboard }) => {
         {/* {# Document Released last 10 #} */}
         <div className="col-6 col-lg-3">
           <div className="bg-0 pl-3 pr-1 pt-2 mt-3">
-            <div className="row">
-              <div className="col-9 pr-0">
-                <h4>Internal Document</h4>
-                <span className="badge badge-pill badge-success">Released</span>
-              </div>
-              <div className="col-3 pl-0 text-right">
-                <button
-                  onClick="updateInternalTable()"
-                  className="btn text-muted"
-                >
-                  <i className="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
+            <h4>Documents</h4>
+            <span className="badge badge-pill badge-success">Released</span>
           </div>
           <table className="table table-borderless text-light" id="released">
             <thead className="bg-0">
@@ -234,16 +165,12 @@ const Dashboard = ({ dashboard }) => {
               </tr>
             </thead>
             <tbody>
-              {/* {% for document_re in documents_re %} */}
-              <tr>
-                <td>
-                  <a href="{% url 'doc_detail' id=document_re.id %}">
-                    document_re.name|truncatechars:20
-                  </a>
-                </td>
-                <td className="text-center">document_re.type</td>
-              </tr>
-              {/* {% endfor %} */}
+              {dashboard.latestDocuments.released.map((document) => (
+                <tr>
+                  <td>{document.name}</td>
+                  <td>{document.type}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -281,16 +208,7 @@ const Dashboard = ({ dashboard }) => {
         {/* {#Work List last 10#} */}
         <div className="col-12 col-lg-6">
           <div className="bg-0 pl-3 pt-2">
-            <div className="row">
-              <div className="col-6">
-                <h4>Works</h4>
-              </div>
-              <div className="col-6 text-right">
-                <button onClick="updateWorkTable()" className="btn text-muted">
-                  <i className="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
+            <h4>Works</h4>
             <p className="m-0 text-muted">Latest 10 Works</p>
           </div>
           <table className="table table-borderless text-light" id="work">
@@ -299,42 +217,16 @@ const Dashboard = ({ dashboard }) => {
                 <th scope="col">Related Document</th>
                 <th scope="col">Type</th>
                 <th scope="col">State</th>
-                {/* {#                    <th scope="col">Create Date</th>#} */}
               </tr>
             </thead>
             <tbody>
-              {/* {% for work in works %} */}
-              <tr>
-                <td>
-                  <a href="{% url 'work_detail' id=work.id %}">
-                    work|truncatechars:30
-                  </a>
-                </td>
-
-                {/* {% if work.get_type_display == 'Create' %} */}
-                <td>
-                  <span className="badge badge-pill badge-success">
-                    work.get_type_display
-                  </span>
-                </td>
-                {/* {% elif work.get_type_display == 'Edit' %} */}
-                <td>
-                  <span className="badge badge-pill badge-warning">
-                    work.get_type_display
-                  </span>
-                </td>
-                {/* {% elif work.get_type_display == 'Cancel' %} */}
-                <td>
-                  <span className="badge badge-pill badge-danger">
-                    work.get_type_display
-                  </span>
-                </td>
-                {/* {% endif %} */}
-
-                <td>work.get_state_display</td>
-                {/* {#                        <td>work.create_date|date:"d-M-Y" work.create_date|time:"H:i"</td>#} */}
-              </tr>
-              {/* {% endfor %} */}
+              {dashboard.latestWorks.all.map((work) => (
+                <tr>
+                  <td>{work.document.name}</td>
+                  <td>{work.type}</td>
+                  <td>{work.state}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
