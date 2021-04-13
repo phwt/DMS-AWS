@@ -47,7 +47,7 @@ model Work {
 //enum WorkType {
 //  CREATE
 //  EDIT
-//  CANCLE
+//  CANCEL
 //}
 //
 //enum WorkState {
