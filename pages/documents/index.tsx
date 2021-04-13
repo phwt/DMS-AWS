@@ -53,7 +53,7 @@ const DocumentList = ({ documents }) => {
           </a>
           &nbsp;
           <a href="{% url 'work_edit' %}" className="btn btn-sm btn-info">
-            <i className="fa fa-pencil"></i>&nbsp;&nbsp;Edit
+            <i className="fa fa-pencil-alt"></i>&nbsp;&nbsp;Edit
           </a>
           &nbsp;
           <a href="{% url 'work_cancel' %}" className="btn btn-sm btn-danger">
