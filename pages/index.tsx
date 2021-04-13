@@ -1,5 +1,7 @@
 import React from "react";
 import axios from "axios";
+import { DocumentStateBadge, documentTypeText } from "./documents";
+import { WorkTypeBadge } from "./works";
 
 export const getServerSideProps = async () => {
   const { data } = await axios.get(`${process.env.API_PATH}dashboard/`);
@@ -119,8 +121,10 @@ const Dashboard = ({ dashboard }) => {
               {dashboard.latestDocuments.all.map((document) => (
                 <tr>
                   <td>{document.name}</td>
-                  <td>{document.type}</td>
-                  <td>{document.state}</td>
+                  <td>{documentTypeText(document.type)}</td>
+                  <td>
+                    <DocumentStateBadge state={document.state} />{" "}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -144,7 +148,7 @@ const Dashboard = ({ dashboard }) => {
               {dashboard.latestDocuments.inProgress.map((document) => (
                 <tr>
                   <td>{document.name}</td>
-                  <td>{document.type}</td>
+                  <td>{documentTypeText(document.type)}</td>
                 </tr>
               ))}
             </tbody>
@@ -168,7 +172,7 @@ const Dashboard = ({ dashboard }) => {
               {dashboard.latestDocuments.released.map((document) => (
                 <tr>
                   <td>{document.name}</td>
-                  <td>{document.type}</td>
+                  <td>{documentTypeText(document.type)}</td>
                 </tr>
               ))}
             </tbody>
@@ -223,8 +227,10 @@ const Dashboard = ({ dashboard }) => {
               {dashboard.latestWorks.all.map((work) => (
                 <tr>
                   <td>{work.document.name}</td>
-                  <td>{work.type}</td>
-                  <td>{work.state}</td>
+                  <td>
+                    <WorkTypeBadge type={work.type} />
+                  </td>
+                  <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
                 </tr>
               ))}
             </tbody>

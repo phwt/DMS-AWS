@@ -12,33 +12,33 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
+export const DocumentStateBadge = ({ state }) => {
+  switch (state) {
+    case "IN_PROGRESS":
+      return <span className="badge badge-pill badge-info">In-Progress</span>;
+    case "RELEASED":
+      return <span className="badge badge-pill badge-success">Released</span>;
+    case "OBSOLETE":
+      return <span className="badge badge-pill badge-danger">Obsolete</span>;
+    case "RECALLED":
+      return <span className="badge badge-pill badge-warning">Recalled</span>;
+  }
+};
+
+export const documentTypeText = (type) => {
+  switch (type) {
+    case "MANUAL":
+      return "Manual";
+    case "PROCEDURE":
+      return "Procedure";
+    case "WORK_INSTRUCTION":
+      return "Work Instruction";
+    case "FORM":
+      return "Form";
+  }
+};
+
 const DocumentList = ({ documents }) => {
-  const documentTypeText = useCallback((type) => {
-    switch (type) {
-      case "MANUAL":
-        return "Manual";
-      case "PROCEDURE":
-        return "Procedure";
-      case "WORK_INSTRUCTION":
-        return "Work Instruction";
-      case "FORM":
-        return "Form";
-    }
-  }, []);
-
-  const documentStateBadge = useCallback((state) => {
-    switch (state) {
-      case "IN_PROGRESS":
-        return <span className="badge badge-pill badge-info">In-Progress</span>;
-      case "RELEASED":
-        return <span className="badge badge-pill badge-success">Released</span>;
-      case "OBSOLETE":
-        return <span className="badge badge-pill badge-danger">Obsolete</span>;
-      case "RECALLED":
-        return <span className="badge badge-pill badge-warning">Recalled</span>;
-    }
-  }, []);
-
   return (
     <>
       {/* {% block title %}{{ doc_type|title }} Document List{% endblock %} */}
@@ -87,7 +87,9 @@ const DocumentList = ({ documents }) => {
             <tr>
               <td>{document.name}</td>
               <td>{documentTypeText(document.type)}</td>
-              <td>{documentStateBadge(document.state)}</td>
+              <td>
+                <DocumentStateBadge state={document.state} />
+              </td>
               <td>
                 <button type="button" className="btn btn-block">
                   <i

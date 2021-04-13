@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useCallback } from "react";
 import { Form } from "react-bootstrap";
 
 export const getServerSideProps = async (ctx) => {
@@ -12,18 +11,18 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-const WorkList = ({ works }) => {
-  const workTypeBadge = useCallback((type) => {
-    switch (type) {
-      case "CREATE":
-        return <span className="badge badge-pill badge-success">Create</span>;
-      case "EDIT":
-        return <span className="badge badge-pill badge-warning">Edit</span>;
-      case "CANCEL":
-        return <span className="badge badge-pill badge-danger">Cancel</span>;
-    }
-  }, []);
+export const WorkTypeBadge = ({ type }) => {
+  switch (type) {
+    case "CREATE":
+      return <span className="badge badge-pill badge-success">Create</span>;
+    case "EDIT":
+      return <span className="badge badge-pill badge-warning">Edit</span>;
+    case "CANCEL":
+      return <span className="badge badge-pill badge-danger">Cancel</span>;
+  }
+};
 
+const WorkList = ({ works }) => {
   return (
     <>
       <h2 className="pb-5">View All Works</h2>
@@ -57,7 +56,9 @@ const WorkList = ({ works }) => {
             {works.map((work) => (
               <tr>
                 <td>{work.document.name}</td>
-                <td>{workTypeBadge(work.type)}</td>
+                <td>
+                  <WorkTypeBadge type={work.type} />
+                </td>
                 <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
                 <td>{work.create_date}</td>
                 <td>{work.complete_date ?? "-"}</td>
