@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -11,32 +8,32 @@ generator client {
 }
 
 model Document {
-  id           Int    @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   name         String
-  type         String
-  state        String @default("IN_PROGRESS")
+  type         DocumentType
+  state        DocumentState @default(IN_PROGRESS)
   fileLocation String
   Work         Work?
 }
 
-//enum DocumentType {
-//  MANUAL
-//  PROCEDURE
-//  WORK_INSTRUCTION
-//  FORM
-//}
-//
-//enum DocumentState {
-//  IN_PROGRESS
-//  RELEASED
-//  OBSOLETE
-//  RECALLED
-//}
+enum DocumentType {
+  MANUAL
+  PROCEDURE
+  WORK_INSTRUCTION
+  FORM
+}
+
+enum DocumentState {
+  IN_PROGRESS
+  RELEASED
+  OBSOLETE
+  RECALLED
+}
 
 model Work {
   id            Int       @id @default(autoincrement())
-  type          String    @default("CREATE")
-  state         String    @default("NEW")
+  type          WorkType  @default(CREATE)
+  state         WorkState @default(NEW)
   detail        String
   create_date   DateTime  @default(now())
   complete_date DateTime?
@@ -44,14 +41,14 @@ model Work {
   document      Document? @relation(fields: [documentId], references: [id])
 }
 
-//enum WorkType {
-//  CREATE
-//  EDIT
-//  CANCEL
-//}
-//
-//enum WorkState {
-//  NEW
-//  REVIEW
-//  COMPLETED
-//}
+enum WorkType {
+  CREATE
+  EDIT
+  CANCEL
+}
+
+enum WorkState {
+  NEW
+  REVIEW
+  COMPLETED
+}
