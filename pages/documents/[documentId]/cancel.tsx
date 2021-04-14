@@ -1,6 +1,7 @@
 import { Col, Form, Row } from "react-bootstrap";
 import React, { useCallback, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async () => {
   const { data } = await axios.get(`${process.env.API_PATH}documents/x/cancel`);
@@ -11,10 +12,18 @@ export const getServerSideProps = async () => {
 };
 
 const DocumentNew = ({ documents }) => {
-  const [name, setName] = useState("");
+  const router = useRouter();
+  const { documentId: routerDocumentId } = router.query; // TODO: Pre-populate select
+
+  const [documentId, setDocumentId] = useState(0);
   const [detail, setDetail] = useState("");
 
-  const submitRequest = useCallback(async () => {}, [name, detail]);
+  const submitRequest = useCallback(async () => {
+    console.log(`${process.env.API_PATH}documents/${documentId}/cancel`);
+    await axios.post(`${process.env.API_PATH}documents/${documentId}/cancel`, {
+      detail,
+    });
+  }, [documentId, detail]);
 
   return (
     <>
@@ -25,9 +34,12 @@ const DocumentNew = ({ documents }) => {
           <Form.Control
             as="select"
             custom
-            value={name}
-            onChange={({ target: { value } }) => setName(value)}
+            value={documentId}
+            onChange={({ target: { value } }) =>
+              setDocumentId(parseInt(value as string))
+            }
           >
+            <option value={0}>Select Document</option>
             {documents.map((document) => (
               <option key={document.id} value={document.id}>
                 {document.name} | {document.type}
