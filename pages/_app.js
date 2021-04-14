@@ -1,11 +1,15 @@
 import "../styles/globals.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 function MyApp({ Component, pageProps }) {
   const [session, loading] = useSession();
-  console.log(session);
+
+  if (loading) return null;
+
+  if (!loading && !session) signIn();
+
   return (
     <>
       <div className="row mt-5">
