@@ -1,8 +1,11 @@
 import "../styles/globals.scss";
 import React from "react";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/client";
 
 function MyApp({ Component, pageProps }) {
+  const [session, loading] = useSession();
+  console.log(session);
   return (
     <>
       <div className="row mt-5">
@@ -123,7 +126,7 @@ function MyApp({ Component, pageProps }) {
                     <a className="nav-link disabled">|</a>
                   </li>
                   {/*{% if user.is_authenticated %}*/}
-                  <li className="nav-item dropdown">
+                  {/* <li className="nav-item dropdown">
                     <a
                       className="nav-link"
                       href="#"
@@ -152,13 +155,32 @@ function MyApp({ Component, pageProps }) {
                       </a>
                     </div>
                   </li>
-                  {/*{% else %}*/}
                   <li className="nav-item">
                     <a className="nav-link" href="% url 'login' %}">
                       Login
                     </a>
-                  </li>
-                  {/*{% endif %}*/}
+                  </li> */}
+                  {!session && (
+                    <>
+                      {/* Not signed in <br />
+                      <button onClick={() => signIn()}>Sign in</button> */}
+                      <div className="nav-link" onClick={signIn} role="button">
+                        Sign in
+                      </div>
+                    </>
+                  )}
+                  {session && (
+                    <>
+                      <div className="nav-link" role="button">
+                        <i className="fa fa-user" aria-hidden="true" />
+                        &nbsp;&nbsp;Signed in as {session.user.name}
+                      </div>
+                      {/* <button onClick={() => signOut()}>Sign out</button> */}
+                      <div className="nav-link" onClick={signOut} role="button">
+                        Sign out
+                      </div>
+                    </>
+                  )}
                 </ul>
               </span>
             </div>
