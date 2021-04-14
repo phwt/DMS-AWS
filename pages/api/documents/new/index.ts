@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
+import multerS3 from "multer-s3";
+import AWS from "aws-sdk";
 
 // Multer 'files' object
 declare module "next" {
@@ -22,11 +24,17 @@ declare module "next" {
 const prisma = new PrismaClient();
 const apiRoute = nextConnect();
 
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
+
 // Upload Middleware
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: "./public/uploads", // TODO: Send to S3
-    filename: (req, file, cb) => cb(null, file.originalname),
+  storage: multerS3({
+    s3,
+    bucket: process.env.S3_BUCKET,
+    key: (req, file, cb) => cb(null, file.originalname),
   }),
 });
 const uploadMiddleware = upload.array("file");
