@@ -1,5 +1,5 @@
 import { Col, Form, Row } from "react-bootstrap";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -13,12 +13,17 @@ export const getServerSideProps = async () => {
 
 const DocumentNew = ({ documents }) => {
   const router = useRouter();
-  const { documentId: routerDocumentId } = router.query; // TODO: Pre-populate select
+  const { documentId: routerDocumentId } = router.query;
 
   const [documentId, setDocumentId] = useState(0);
   const [name, setName] = useState("");
   const [detail, setDetail] = useState("");
   const [file, setFile] = useState<File>();
+
+  useEffect(() => {
+    if (routerDocumentId !== "x")
+      setDocumentId(parseInt(routerDocumentId as string));
+  }, []);
 
   const submitRequest = useCallback(async () => {
     const formData = new FormData();
