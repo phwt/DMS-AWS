@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { WorkTypeBadge } from "../index";
 import { documentTypeText } from "../../documents";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 export const getServerSideProps = async (context) => {
   const { data } = await axios.get(
@@ -71,6 +71,26 @@ const Work = ({ work }) => {
         return `Request to cancel ${work.document.name}`;
     }
   }, [work.type]);
+
+  const updateWorkState = useCallback(
+    async (state) => {
+      await axios.patch(`${process.env.API_PATH}works/${workId}`, {
+        state,
+      });
+      window.location.reload();
+    },
+    [work]
+  );
+
+  const submitReviewAction = useCallback(
+    async (result) => {
+      await axios.patch(`${process.env.API_PATH}documents/${work.documentId}`, {
+        state: result ? "RELEASED" : "RECALLED",
+      });
+      await updateWorkState("COMPLETED");
+    },
+    [work]
+  );
 
   return (
     <div>
@@ -142,7 +162,12 @@ const Work = ({ work }) => {
               <h5 className="m-0">Action</h5>
             </div>
             <div className="card-body">
-              <button className="btn btn-block btn-info">
+              <button
+                className="btn btn-block btn-info"
+                onClick={async () => {
+                  await updateWorkState("REVIEW");
+                }}
+              >
                 Submit For Review
               </button>
             </div>
@@ -157,8 +182,22 @@ const Work = ({ work }) => {
               <h5 className="m-0">Review Actions</h5>
             </div>
             <div className="card-body">
-              <button className="btn btn-block btn-success">Approve</button>
-              <button className="btn btn-block btn-danger">Reject</button>
+              <button
+                className="btn btn-block btn-success"
+                onClick={async () => {
+                  await submitReviewAction(true);
+                }}
+              >
+                Approve
+              </button>
+              <button
+                className="btn btn-block btn-danger"
+                onClick={async () => {
+                  await submitReviewAction(false);
+                }}
+              >
+                Reject
+              </button>
             </div>
           </div>
         </div>
