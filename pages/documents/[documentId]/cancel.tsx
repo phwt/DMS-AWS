@@ -19,10 +19,14 @@ const DocumentNew = ({ documents }) => {
   const [detail, setDetail] = useState("");
 
   const submitRequest = useCallback(async () => {
-    console.log(`${process.env.API_PATH}documents/${documentId}/cancel`);
-    await axios.post(`${process.env.API_PATH}documents/${documentId}/cancel`, {
-      detail,
-    });
+    const { data } = await axios.post(
+      `${process.env.API_PATH}documents/${documentId}/cancel`,
+      {
+        detail,
+      }
+    );
+
+    await router.push(`/works/${data.id}`);
   }, [documentId, detail]);
 
   return (

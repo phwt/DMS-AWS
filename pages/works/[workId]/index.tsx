@@ -76,6 +76,7 @@ const Work = ({ work }) => {
     async (state) => {
       await axios.patch(`${process.env.API_PATH}works/${workId}`, {
         state,
+        complete_date: new Date(),
       });
       window.location.reload();
     },
@@ -84,8 +85,20 @@ const Work = ({ work }) => {
 
   const submitReviewAction = useCallback(
     async (result) => {
+      let nextState;
+      switch (work.type) {
+        case "CREATE":
+          nextState = result ? "RELEASED" : "RECALLED";
+          break;
+        case "EDIT":
+          break;
+        case "CANCEL":
+          nextState = result ? "OBSOLETE" : "RELEASED";
+          break;
+      }
+
       await axios.patch(`${process.env.API_PATH}documents/${work.documentId}`, {
-        state: result ? "RELEASED" : "RECALLED",
+        state: nextState,
       });
       await updateWorkState("COMPLETED");
     },

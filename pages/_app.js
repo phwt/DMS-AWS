@@ -96,13 +96,15 @@ function MyApp({ Component, pageProps }) {
                         />
                         Edit Document
                       </a>
-                      <a className="dropdown-item text-dark">
-                        <i
-                          className="fa fa-minus-square mr-2"
-                          aria-hidden="true"
-                        />
-                        Cancel Document
-                      </a>
+                      <Link href="/documents/x/cancel">
+                        <a className="dropdown-item text-dark">
+                          <i
+                            className="fa fa-minus-square mr-2"
+                            aria-hidden="true"
+                          />
+                          Cancel Document
+                        </a>
+                      </Link>
                     </div>
                   </li>
                   <li className="nav-item dropdown">
