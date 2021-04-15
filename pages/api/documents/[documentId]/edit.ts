@@ -3,22 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
 
-// Multer 'files' object
-declare module "next" {
-  interface NextApiRequest {
-    files: {
-      fieldname: string;
-      originalname: string;
-      encoding: string;
-      mimetype: string;
-      destination: string;
-      filename: string;
-      path: string;
-      size: number;
-    }[];
-  }
-}
-
 const prisma = new PrismaClient();
 const apiRoute = nextConnect();
 
@@ -32,15 +16,25 @@ const upload = multer({
 const uploadMiddleware = upload.array("file");
 apiRoute.use(uploadMiddleware);
 
-// API Route
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const result = await prisma.work.create({
+  let result;
+
+  const editDocument = await prisma.document.findFirst({
+    where: {
+      id: parseInt(<string>req.query.documentId),
+    },
+  });
+
+  result = await prisma.work.create({
     data: {
+      type: "EDIT",
       detail: req.body.detail,
+      editDocumentId: parseInt(<string>req.query.documentId),
       document: {
         create: {
-          name: req.body.name,
-          type: req.body.type,
+          name: editDocument.name,
+          type: editDocument.type,
+          state: "IN_PROGRESS",
           fileLocation: req.files[0].path,
         },
       },

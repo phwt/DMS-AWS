@@ -31,14 +31,15 @@ enum DocumentState {
 }
 
 model Work {
-  id            Int       @id @default(autoincrement())
-  type          WorkType  @default(CREATE)
-  state         WorkState @default(NEW)
-  detail        String
-  create_date   DateTime  @default(now())
-  complete_date DateTime?
-  documentId    Int?
-  document      Document? @relation(fields: [documentId], references: [id])
+  id             Int       @id @default(autoincrement())
+  type           WorkType  @default(CREATE)
+  state          WorkState @default(NEW)
+  detail         String
+  create_date    DateTime  @default(now())
+  complete_date  DateTime?
+  documentId     Int?
+  document       Document? @relation(fields: [documentId], references: [id])
+  editDocumentId Int? // Document to be edited (and obsolete if edit approved)
 }
 
 enum WorkType {
