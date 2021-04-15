@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Form } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
   const { data } = await axios.get(`${process.env.API_PATH}works/`);
@@ -23,6 +24,8 @@ export const WorkTypeBadge = ({ type }) => {
 };
 
 const WorkList = ({ works }) => {
+  const router = useRouter();
+
   return (
     <>
       <h2 className="pb-5">View All Works</h2>
@@ -63,7 +66,13 @@ const WorkList = ({ works }) => {
                 <td>{work.create_date}</td>
                 <td>{work.complete_date ?? "-"}</td>
                 <td>
-                  <button type="button" className="btn btn-block">
+                  <button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={async () => {
+                      await router.push(`/works/${work.id}`);
+                    }}
+                  >
                     <i
                       className="fa fa-chevron-right text-info"
                       aria-hidden="true"

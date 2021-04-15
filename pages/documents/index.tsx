@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (ctx) => {
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
@@ -39,6 +39,8 @@ export const documentTypeText = (type) => {
 };
 
 const DocumentList = ({ documents }) => {
+  const router = useRouter();
+
   return (
     <>
       {/* {% block title %}{{ doc_type|title }} Document List{% endblock %} */}
@@ -48,16 +50,24 @@ const DocumentList = ({ documents }) => {
         </div>
         <div className="col-6 text-right">
           Request to&nbsp;&nbsp;&nbsp;
-          <a href="{% url 'work_create' %}" className="btn btn-sm btn-success">
-            <i className="fa fa-plus"></i>&nbsp;&nbsp;Create
+          <a
+            className="btn btn-sm btn-success"
+            onClick={async () => {
+              await router.push("/documents/new");
+            }}
+          >
+            <i className="fa fa-plus" />
+            &nbsp;&nbsp;Create
           </a>
           &nbsp;
           <a href="{% url 'work_edit' %}" className="btn btn-sm btn-info">
-            <i className="fa fa-pencil-alt"></i>&nbsp;&nbsp;Edit
+            <i className="fa fa-pencil-alt" />
+            &nbsp;&nbsp;Edit
           </a>
           &nbsp;
           <a href="{% url 'work_cancel' %}" className="btn btn-sm btn-danger">
-            <i className="fa fa-minus"></i>&nbsp;&nbsp;Cancel
+            <i className="fa fa-minus" />
+            &nbsp;&nbsp;Cancel
           </a>
         </div>
       </div>
@@ -91,7 +101,13 @@ const DocumentList = ({ documents }) => {
                 <DocumentStateBadge state={document.state} />
               </td>
               <td>
-                <button type="button" className="btn btn-block">
+                <button
+                  type="button"
+                  className="btn btn-block"
+                  onClick={async () => {
+                    await router.push(`/documents/${document.id}`);
+                  }}
+                >
                   <i
                     className="fa fa-chevron-right text-info"
                     aria-hidden="true"

@@ -147,7 +147,14 @@ const Work = ({ work }) => {
                 <div className="card-text">
                   <b>Name</b>: {work.document.name} <br />
                   <b>Type</b>: {documentTypeText(work.document.type)} <br />
-                  <a className="btn btn-info mt-3">View Document</a>
+                  <a
+                    className="btn btn-info mt-3"
+                    onClick={async () => {
+                      await router.push(`/documents/${work.document.id}`);
+                    }}
+                  >
+                    View Document
+                  </a>
                 </div>
               </div>
             </div>
