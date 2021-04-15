@@ -89,13 +89,15 @@ function MyApp({ Component, pageProps }) {
                           Create Document
                         </a>
                       </Link>
-                      <a className="dropdown-item text-dark">
-                        <i
-                          className="fa fa-pen-square mr-2"
-                          aria-hidden="true"
-                        />
-                        Edit Document
-                      </a>
+                      <Link href="/documents/x/edit">
+                        <a className="dropdown-item text-dark">
+                          <i
+                            className="fa fa-pen-square mr-2"
+                            aria-hidden="true"
+                          />
+                          Edit Document
+                        </a>
+                      </Link>
                       <Link href="/documents/x/cancel">
                         <a className="dropdown-item text-dark">
                           <i

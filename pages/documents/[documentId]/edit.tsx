@@ -62,7 +62,7 @@ const DocumentNew = ({ documents }) => {
           </Form.Control>
         </Col>
 
-        <Col md={12}>
+        <Col md={12} className="mt-2">
           <Form.Label>New Document Name</Form.Label>
           <Form.Control
             value={name}

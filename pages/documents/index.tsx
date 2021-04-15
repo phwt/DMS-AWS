@@ -60,12 +60,22 @@ const DocumentList = ({ documents }) => {
             &nbsp;&nbsp;Create
           </a>
           &nbsp;
-          <a href="{% url 'work_edit' %}" className="btn btn-sm btn-info">
+          <a
+            className="btn btn-sm btn-info"
+            onClick={async () => {
+              await router.push("/documents/x/edit");
+            }}
+          >
             <i className="fa fa-pencil-alt" />
             &nbsp;&nbsp;Edit
           </a>
           &nbsp;
-          <a href="{% url 'work_cancel' %}" className="btn btn-sm btn-danger">
+          <a
+            className="btn btn-sm btn-danger"
+            onClick={async () => {
+              await router.push("/documents/x/cancel");
+            }}
+          >
             <i className="fa fa-minus" />
             &nbsp;&nbsp;Cancel
           </a>
