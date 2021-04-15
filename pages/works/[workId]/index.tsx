@@ -14,6 +14,49 @@ export const getServerSideProps = async (context) => {
   };
 };
 
+const WorkStateBadges = ({ state }) => {
+  const badgeColor = () => {
+    switch (state) {
+      case "NEW":
+        return {
+          new: "badge-light",
+          link1: "bg-dark",
+          review: "badge-dark",
+          link2: "bg-dark",
+          completed: "badge-dark",
+        };
+      case "REVIEW":
+        return {
+          new: "badge-light",
+          link1: "bg-light",
+          review: "badge-light",
+          link2: "bg-dark",
+          completed: "badge-dark",
+        };
+      case "COMPLETED":
+        return {
+          new: "badge-success",
+          link1: "bg-success",
+          review: "badge-success",
+          link2: "bg-success",
+          completed: "badge-success",
+        };
+    }
+  };
+
+  return (
+    <>
+      <span className={`badge badge-pill ${badgeColor().new}`}>New</span>
+      <span className={`progress-link ${badgeColor().link1}`} />
+      <span className={`badge badge-pill ${badgeColor().review}`}>Review</span>
+      <span className={`progress-link ${badgeColor().link2}`} />
+      <span className={`badge badge-pill ${badgeColor().completed}`}>
+        Completed
+      </span>
+    </>
+  );
+};
+
 const Work = ({ work }) => {
   const router = useRouter();
   const { workId } = router.query;
@@ -27,7 +70,7 @@ const Work = ({ work }) => {
       case "CANCEL":
         return `Request to cancel ${work.document.name}`;
     }
-  }, []);
+  }, [work.type]);
 
   return (
     <div>
@@ -35,7 +78,11 @@ const Work = ({ work }) => {
         <div className="col-3">
           <h2 className="pb-5">Work Detail</h2>
         </div>
-        <div className="col-9 text-right" />
+        <div className="col-9 text-right">
+          <div className="mt-2">
+            <WorkStateBadges state={work.state} />
+          </div>
+        </div>
       </div>
 
       <h3>{workTitle}</h3>
