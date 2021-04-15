@@ -91,6 +91,7 @@ const Work = ({ work }) => {
           nextState = result ? "RELEASED" : "RECALLED";
           break;
         case "EDIT":
+          nextState = result ? "RELEASED" : "RECALLED";
           break;
         case "CANCEL":
           nextState = result ? "OBSOLETE" : "RELEASED";
@@ -100,6 +101,16 @@ const Work = ({ work }) => {
       await axios.patch(`${process.env.API_PATH}documents/${work.documentId}`, {
         state: nextState,
       });
+
+      if (work.type === "EDIT") {
+        await axios.patch(
+          `${process.env.API_PATH}documents/${work.editDocumentId}`,
+          {
+            state: result ? "OBSOLETE" : "RELEASED",
+          }
+        );
+      }
+
       await updateWorkState("COMPLETED");
     },
     [work]

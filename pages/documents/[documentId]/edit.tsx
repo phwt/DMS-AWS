@@ -16,6 +16,7 @@ const DocumentNew = ({ documents }) => {
   const { documentId: routerDocumentId } = router.query; // TODO: Pre-populate select
 
   const [documentId, setDocumentId] = useState(0);
+  const [name, setName] = useState("");
   const [detail, setDetail] = useState("");
   const [file, setFile] = useState<File>();
 
@@ -23,6 +24,7 @@ const DocumentNew = ({ documents }) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("detail", detail);
+    formData.append("name", name);
 
     const { data } = await axios.post(
       `${process.env.API_PATH}documents/${documentId}/edit`,
@@ -58,6 +60,14 @@ const DocumentNew = ({ documents }) => {
               </option>
             ))}
           </Form.Control>
+        </Col>
+
+        <Col md={12}>
+          <Form.Label>New Document Name</Form.Label>
+          <Form.Control
+            value={name}
+            onChange={({ target: { value } }) => setName(value)}
+          />
         </Col>
 
         <Col md={12} className="mt-2">

@@ -32,7 +32,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
       editDocumentId: parseInt(<string>req.query.documentId),
       document: {
         create: {
-          name: editDocument.name,
+          name: req.body.name,
           type: editDocument.type,
           state: "IN_PROGRESS",
           fileLocation: req.files[0].path,
