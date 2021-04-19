@@ -13,16 +13,28 @@ declare module "next" {
       originalname: string;
       encoding: string;
       mimetype: string;
-      destination: string;
-      filename: string;
-      path: string;
       size: number;
+      bucket: string;
+      key: string;
+      acl: string;
+      contentType: string;
+      // contentDisposition: null,
+      storageClass: string;
+      // serverSideEncryption: null,
+      // metadata: null,
+      location: string;
+      etag: string;
+      versionId: undefined;
     }[];
   }
 }
 
 const prisma = new PrismaClient();
-const apiRoute = nextConnect();
+const apiRoute = nextConnect({
+  onError: (err) => {
+    console.log(err.toString());
+  },
+});
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -49,7 +61,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         create: {
           name: req.body.name,
           type: req.body.type,
-          fileLocation: req.files[0].path,
+          fileLocation: req.files[0].location,
         },
       },
     },
