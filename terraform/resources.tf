@@ -69,3 +69,64 @@ resource "aws_route_table_association" "private-rta-subnet" {
   subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.private_rtb.id
 }
+
+# SECURITY GROUPS #
+
+resource "aws_security_group" "allow_http" {
+  name        = "allow_http"
+  description = "Allow HTTP (80) traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "HTTP"
+    protocol         = "tcp"
+    from_port        = 80
+    to_port          = 80
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    description      = "Accept all incoming traffic"
+    protocol         = "all"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = local.mandatory_tags
+}
+
+# LOAD BALANCING #
+
+resource "aws_lb" "alb" {
+  name               = "${var.project_name}-ALB"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_http.id]
+  subnets            = aws_subnet.public_subnet.*.id
+
+  tags = local.mandatory_tags
+}
+
+resource "aws_lb_target_group" "target_group" {
+  name     = "${var.project_name}-alb-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc.id
+
+  tags = local.mandatory_tags
+}
+
+
+resource "aws_lb_listener" "alb_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target_group.arn
+  }
+}
