@@ -1,5 +1,5 @@
 variable "project_name" {
-  type = string
+  type    = string
   default = "DMS"
 }
 variable "aws_access_key" {}
@@ -10,6 +10,9 @@ variable "region" {
 variable "network_address_space" {
   type    = string
   default = "10.25.0.0/16"
+}
+variable "db_config" {
+  type = map(string)
 }
 
 locals {

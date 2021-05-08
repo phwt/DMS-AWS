@@ -130,3 +130,47 @@ resource "aws_lb_listener" "alb_listener" {
     target_group_arn = aws_lb_target_group.target_group.arn
   }
 }
+
+# DATABASE #
+
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "${lower(var.db_config.name)}_db_subnet_group"
+  subnet_ids = aws_subnet.private_subnet.*.id
+
+  tags = merge(local.mandatory_tags, { Name = "${var.db_config.name} DB Subnet Group" })
+}
+
+resource "aws_security_group" "rds" {
+  name   = "${lower(var.db_config.name)}_rds_sg"
+  vpc_id = aws_vpc.vpc.id
+
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
+}
+
+
+resource "aws_rds_cluster" "postgresql" {
+  cluster_identifier      = "${lower(var.db_config.name)}-aurora-cluster"
+  engine                  = "aurora-postgresql"
+  availability_zones      = slice(data.aws_availability_zones.available.names, 0, 3)
+  db_subnet_group_name    = aws_db_subnet_group.db_subnet_group.name
+  database_name           = var.db_config.name
+  master_username         = var.db_config.username
+  master_password         = var.db_config.password
+  backup_retention_period = 7
+  preferred_backup_window = "20:00-22:00"
+  vpc_security_group_ids  = [aws_security_group.rds.id]
+
+  tags = local.mandatory_tags
+}
+
+resource "aws_rds_cluster_instance" "cluster_instances" {
+  count                = 3
+  identifier           = "${lower(var.db_config.name)}-aurora-${count.index}"
+  instance_class       = "db.t3.medium"
+  availability_zone    = data.aws_availability_zones.available.names[count.index]
+  db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
+  cluster_identifier   = aws_rds_cluster.postgresql.id
+  engine               = aws_rds_cluster.postgresql.engine
+  engine_version       = aws_rds_cluster.postgresql.engine_version
+  publicly_accessible  = false
+}
