@@ -140,6 +140,28 @@ resource "aws_security_group" "allow_ssh" {
   tags = local.mandatory_tags
 }
 
+resource "aws_security_group" "rds" {
+  name        = "${lower(var.db_config.name)}_rds_sg"
+  description = "Allow local PostgreSQL (5342) traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  egress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
+}
+
 # LOAD BALANCING #
 
 resource "aws_lb" "alb" {
@@ -181,14 +203,6 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 
   tags = merge(local.mandatory_tags, { Name = "${var.db_config.name} DB Subnet Group" })
 }
-
-resource "aws_security_group" "rds" {
-  name   = "${lower(var.db_config.name)}_rds_sg"
-  vpc_id = aws_vpc.vpc.id
-
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
-}
-
 
 resource "aws_rds_cluster" "postgresql" {
   cluster_identifier      = "${lower(var.db_config.name)}-aurora-cluster"
