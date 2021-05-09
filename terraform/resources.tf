@@ -8,6 +8,26 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
+data "aws_ami" "aws-linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # NETWORKING #
 
 resource "aws_vpc" "vpc" {
@@ -98,6 +118,28 @@ resource "aws_security_group" "allow_http" {
   tags = local.mandatory_tags
 }
 
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow SSH (22) traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = local.mandatory_tags
+}
+
 # LOAD BALANCING #
 
 resource "aws_lb" "alb" {
@@ -173,4 +215,23 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
   engine               = aws_rds_cluster.postgresql.engine
   engine_version       = aws_rds_cluster.postgresql.engine_version
   publicly_accessible  = false
+}
+
+# COMPUTE #
+
+resource "aws_instance" "bastion_host" {
+  ami                    = data.aws_ami.aws-linux.id
+  instance_type          = "t2.micro"
+  key_name               = var.key_name
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  subnet_id              = aws_subnet.public_subnet[0].id
+
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ec2-user"
+    private_key = file(var.private_key_path)
+  }
+
+  tags = merge(local.mandatory_tags, { Name = "${var.project_name} Bastion Host" })
 }
