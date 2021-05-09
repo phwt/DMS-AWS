@@ -140,6 +140,28 @@ resource "aws_security_group" "allow_ssh" {
   tags = local.mandatory_tags
 }
 
+resource "aws_security_group" "rds" {
+  name        = "${lower(var.db_config.name)}_rds_sg"
+  description = "Allow local MySQL (3306) traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  egress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
+}
+
 # LOAD BALANCING #
 
 resource "aws_lb" "alb" {
@@ -171,6 +193,41 @@ resource "aws_lb_listener" "alb_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.target_group.arn
   }
+}
+
+# DATABASE #
+
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "${lower(var.db_config.name)}_db_subnet_group"
+  subnet_ids = aws_subnet.private_subnet.*.id
+
+  tags = merge(local.mandatory_tags, { Name = "${var.db_config.name} DB Subnet Group" })
+}
+
+resource "aws_db_instance" "mysql" {
+  engine         = "mysql"
+  engine_version = "5.7"
+  instance_class = "db.t3.micro"
+  identifier     = "${lower(var.db_config.name)}-db"
+  name           = var.db_config.name
+  username       = var.db_config.username
+  password       = var.db_config.password
+
+  storage_type      = "gp2"
+  allocated_storage = 20
+
+  multi_az               = true
+  vpc_security_group_ids = [aws_security_group.rds.id]
+  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
+  publicly_accessible    = false
+
+  skip_final_snapshot     = true
+  apply_immediately       = true
+  backup_retention_period = 7
+  backup_window           = "20:00-22:00"
+
+
+  tags = local.mandatory_tags
 }
 
 # COMPUTE #
