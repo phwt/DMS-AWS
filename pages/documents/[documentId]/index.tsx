@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { DocumentStateBadge } from "../index";
 import { restrictPage } from "@modules/Auth";
+import { Button } from "react-bootstrap";
+import ActionCard from "@components/common/ActionCard";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -42,35 +44,44 @@ const Document = ({ document }) => {
             </table>
           </div>
 
-          <div className="col-3" />
+          <div className="col-3">
+            {document.state === "RELEASED" && (
+              <ActionCard header="Create Request">
+                <button
+                  className="btn btn-block btn-warning"
+                  onClick={async () => {
+                    await router.push(`${documentId}/edit`);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-block btn-danger"
+                  onClick={async () => {
+                    await router.push(`${documentId}/cancel`);
+                  }}
+                >
+                  Cancel
+                </button>
+              </ActionCard>
+            )}
+          </div>
 
-          {document.state === "RELEASED" && (
-            <div className="col-3">
-              <div className="card bg-dark mt-3">
-                <div className="card-header">
-                  <h5 className="m-0">Create Request</h5>
-                </div>
-                <div className="card-body">
-                  <button
-                    className="btn btn-block btn-warning"
-                    onClick={async () => {
-                      await router.push(`${documentId}/edit`);
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-block btn-danger"
-                    onClick={async () => {
-                      await router.push(`${documentId}/cancel`);
-                    }}
-                  >
-                    Cancle
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+          <div className="col-3">
+            <ActionCard header="Actions">
+              <a
+                download="filename.pdf"
+                href={document.file}
+                className="btn btn-block btn-info"
+              >
+                <i className="fa fa-download mr-2" /> Download
+              </a>
+              <Button block variant="secondary">
+                <i className="fa fa-paper-plane mr-2" />
+                Send
+              </Button>
+            </ActionCard>
+          </div>
         </div>
 
         <iframe src={document.file} width="100%" height="500px" />
