@@ -222,3 +222,21 @@ resource "aws_instance" "bastion_host" {
 
   tags = merge(local.mandatory_tags, { Name = "${var.project_name} Bastion Host" })
 }
+
+# CONTAINERS #
+
+resource "aws_ecr_repository" "ecr" {
+  name                 = "dms-ecr"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = local.mandatory_tags
+}
+
+resource "aws_ecs_cluster" "ecs_cluster" {
+  name = "dms-cluster"
+  tags = local.mandatory_tags
+}
