@@ -1,15 +1,14 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { requestHandler } from "@modules/Utils";
 import nc from "next-connect";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
 const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { query } = req;
-    const result = await prisma.document.findFirst({
+    const result = await localPrisma.document.findFirst({
       where: {
         id: parseInt(<string>query.documentId),
       },
@@ -22,7 +21,7 @@ handler
     const body = req.body;
     delete body["id"];
 
-    const result = await prisma.document.update({
+    const result = await localPrisma.document.update({
       where: {
         id: parseInt(<string>query.documentId),
       },

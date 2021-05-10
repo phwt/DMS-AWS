@@ -1,21 +1,20 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
 import { requestHandler, S3Middleware } from "@modules/Utils";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
 const handler = nc(requestHandler);
 
 handler.use(S3Middleware());
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const editDocument = await prisma.document.findFirst({
+  const editDocument = await localPrisma.document.findFirst({
     where: {
       id: parseInt(<string>req.query.documentId),
     },
   });
 
-  const result = await prisma.work.create({
+  const result = await localPrisma.work.create({
     data: {
       type: "EDIT",
       detail: req.body.detail,

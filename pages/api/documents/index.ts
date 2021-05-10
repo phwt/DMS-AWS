@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
 import { requestHandler } from "@modules/Utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
 const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const result = await prisma.document.findMany();
+    const result = await localPrisma.document.findMany();
 
     res.status(200).json(result);
   })
@@ -16,7 +15,7 @@ handler
     const body = req.body;
 
     delete body["id"];
-    const result = await prisma.document.create({
+    const result = await localPrisma.document.create({
       data: body,
     });
 

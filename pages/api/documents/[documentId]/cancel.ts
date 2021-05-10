@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
 import { requestHandler } from "@modules/Utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
 const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const result = await prisma.document.findMany({
+    const result = await localPrisma.document.findMany({
       where: {
         state: "RELEASED",
       },
@@ -17,7 +16,7 @@ handler
     res.status(200).json(result);
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const result = await prisma.work.create({
+    const result = await localPrisma.work.create({
       data: {
         type: "CANCEL",
         detail: req.body.detail,

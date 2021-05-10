@@ -1,15 +1,14 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
 import { requestHandler, S3Middleware } from "@modules/Utils";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
 const handler = nc(requestHandler);
 
 handler.use(S3Middleware());
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const result = await prisma.work.create({
+  const result = await localPrisma.work.create({
     data: {
       detail: req.body.detail,
       document: {
