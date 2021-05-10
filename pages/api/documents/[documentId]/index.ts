@@ -1,35 +1,35 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { apiWrapper } from "@modules/Utils";
+import { requestHandler } from "@modules/Utils";
+import nc from "next-connect";
 
 const prisma = new PrismaClient();
+const handler = nc(requestHandler);
 
-export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { query } = req;
-  const body = req.body;
-  let result;
+handler
+  .get(async (req: NextApiRequest, res: NextApiResponse) => {
+    const { query } = req;
+    const result = await prisma.document.findFirst({
+      where: {
+        id: parseInt(<string>query.documentId),
+      },
+    });
 
-  switch (req.method) {
-    case "GET":
-      result = await prisma.document.findFirst({
-        where: {
-          id: parseInt(<string>query.documentId),
-        },
-      });
+    res.status(200).json(result);
+  })
+  .patch(async (req: NextApiRequest, res: NextApiResponse) => {
+    const { query } = req;
+    const body = req.body;
+    delete body["id"];
 
-      res.status(200).json(result);
-      break;
-    case "PATCH":
-      delete body["id"];
+    const result = await prisma.document.update({
+      where: {
+        id: parseInt(<string>query.documentId),
+      },
+      data: body,
+    });
 
-      result = await prisma.document.update({
-        where: {
-          id: parseInt(<string>query.documentId),
-        },
-        data: body,
-      });
+    res.status(200).json(result);
+  });
 
-      res.status(200).json(result);
-      break;
-  }
-});
+export default handler;

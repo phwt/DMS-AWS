@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { apiWrapper } from "@modules/Utils";
+import { requestHandler } from "@modules/Utils";
 import { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const prisma = new PrismaClient();
+const handler = nc(requestHandler);
 
-export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   let result;
 
   const totalDocuments = async () => {
@@ -118,3 +120,5 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
       break;
   }
 });
+
+export default handler;

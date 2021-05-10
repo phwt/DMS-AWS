@@ -1,28 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-import { apiWrapper } from "@modules/Utils";
+import { requestHandler } from "@modules/Utils";
 import { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
 
 const prisma = new PrismaClient();
+const handler = nc(requestHandler);
 
-export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { query } = req;
-  const body = req.body;
-  let result;
+handler
+  .get(async (req: NextApiRequest, res: NextApiResponse) => {
+    const result = await prisma.document.findMany();
 
-  switch (req.method) {
-    case "GET":
-      result = await prisma.document.findMany();
+    res.status(200).json(result);
+  })
+  .post(async (req: NextApiRequest, res: NextApiResponse) => {
+    const body = req.body;
 
-      res.status(200).json(result);
-      break;
+    delete body["id"];
+    const result = await prisma.document.create({
+      data: body,
+    });
 
-    case "POST":
-      delete body["id"];
-      result = await prisma.document.create({
-        data: body,
-      });
+    res.status(200).json(result);
+  });
 
-      res.status(200).json(result);
-      break;
-  }
-});
+export default handler;
