@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nc from "next-connect";
-import { requestHandler, S3Middleware } from "@modules/Utils";
+import { requestHandler, S3Middleware, S3URLtoFileName } from "@modules/Utils";
 import { localPrisma } from "@modules/Prisma";
 
 const handler = nc(requestHandler);
@@ -15,7 +15,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
         create: {
           name: req.body.name,
           type: req.body.type,
-          fileLocation: req.files[0].location,
+          fileLocation: S3URLtoFileName(req.files[0].location),
         },
       },
     },

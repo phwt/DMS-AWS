@@ -70,7 +70,7 @@ const Document = ({ document }) => {
           <div className="col-3">
             <ActionCard header="Actions">
               <a
-                download="filename.pdf"
+                download={document.fileLocation}
                 href={document.file}
                 className="btn btn-block btn-info"
               >

@@ -44,3 +44,8 @@ export const S3Middleware = () => {
 
   return upload.array("file");
 };
+
+export const S3URLtoFileName = (url: string) => {
+  const urls = url.split("/");
+  return urls[urls.length - 1];
+};

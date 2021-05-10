@@ -7,17 +7,17 @@ const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const file = await AWS_S3.getObject({
-      Bucket: process.env.S3_BUCKET,
-      Key: "sample-pdf-vylbwe.pdf",
-    }).promise();
-
     const { query } = req;
     const result = await localPrisma.document.findFirst({
       where: {
         id: parseInt(<string>query.documentId),
       },
     });
+
+    const file = await AWS_S3.getObject({
+      Bucket: process.env.S3_BUCKET,
+      Key: result.fileLocation,
+    }).promise();
 
     res.status(200).json({
       ...result,
