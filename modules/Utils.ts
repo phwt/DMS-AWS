@@ -36,6 +36,8 @@ export const S3Middleware = () => {
     storage: multerS3({
       s3,
       bucket: process.env.S3_BUCKET,
+      contentType: multerS3.AUTO_CONTENT_TYPE,
+      contentDisposition: "inline",
       key: (req, file, cb) => cb(null, uniqueFileName(file.originalname)),
     }),
   });
