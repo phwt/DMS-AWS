@@ -1,64 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import nextConnect from "next-connect";
-import multer from "multer";
-import multerS3 from "multer-s3";
-import AWS from "aws-sdk";
-import { uniqueFileName } from "@modules/Utils";
-
-// Multer 'files' object
-declare module "next" {
-  interface NextApiRequest {
-    files: {
-      fieldname: string;
-      originalname: string;
-      encoding: string;
-      mimetype: string;
-      size: number;
-      bucket: string;
-      key: string;
-      acl: string;
-      contentType: string;
-      // contentDisposition: null,
-      storageClass: string;
-      // serverSideEncryption: null,
-      // metadata: null,
-      location: string;
-      etag: string;
-      versionId: undefined;
-    }[];
-  }
-}
+import nc from "next-connect";
+import { requestHandler, S3Middleware } from "@modules/Utils";
 
 const prisma = new PrismaClient();
-const apiRoute = nextConnect();
+const handler = nc(requestHandler);
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+handler.use(S3Middleware());
 
-// Upload Middleware
-const upload = multer({
-  storage: multerS3({
-    s3,
-    bucket: process.env.S3_BUCKET,
-    key: (req, file, cb) => cb(null, uniqueFileName(file.originalname)),
-  }),
-});
-const uploadMiddleware = upload.array("file");
-apiRoute.use(uploadMiddleware);
-
-apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  let result;
-
+handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const editDocument = await prisma.document.findFirst({
     where: {
       id: parseInt(<string>req.query.documentId),
     },
   });
 
-  result = await prisma.work.create({
+  const result = await prisma.work.create({
     data: {
       type: "EDIT",
       detail: req.body.detail,
@@ -77,7 +34,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(result);
 });
 
-export default apiRoute;
+export default handler;
 
 export const config = {
   api: {
