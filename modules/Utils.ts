@@ -36,7 +36,6 @@ export const S3Middleware = () => {
     storage: multerS3({
       s3: AWS_S3,
       bucket: process.env.S3_BUCKET,
-      acl: "public-read", // TODO: Restrict access to Cognito user only
       contentType: multerS3.AUTO_CONTENT_TYPE,
       contentDisposition: "inline",
       key: (req, file, cb) => cb(null, uniqueFileName(file.originalname)),

@@ -73,11 +73,7 @@ const Document = ({ document }) => {
           )}
         </div>
 
-        <iframe
-          src="/content/{{ document.file_location }}"
-          width="100%"
-          height="500px"
-        />
+        <iframe src={document.file} width="100%" height="500px" />
       </div>
       <br />
       <br />

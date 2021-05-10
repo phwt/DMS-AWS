@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { requestHandler } from "@modules/Utils";
+import { AWS_S3, requestHandler } from "@modules/Utils";
 import nc from "next-connect";
 import { localPrisma } from "@modules/Prisma";
 
@@ -7,6 +7,11 @@ const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
+    const file = await AWS_S3.getObject({
+      Bucket: process.env.S3_BUCKET,
+      Key: "sample-pdf-vylbwe.pdf",
+    }).promise();
+
     const { query } = req;
     const result = await localPrisma.document.findFirst({
       where: {
@@ -14,7 +19,10 @@ handler
       },
     });
 
-    res.status(200).json(result);
+    res.status(200).json({
+      ...result,
+      file: `data:application/pdf;base64,${file.Body.toString("base64")}`,
+    });
   })
   .patch(async (req: NextApiRequest, res: NextApiResponse) => {
     const { query } = req;
