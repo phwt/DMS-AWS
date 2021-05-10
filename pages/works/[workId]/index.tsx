@@ -3,8 +3,11 @@ import axios from "axios";
 import { WorkTypeBadge } from "../index";
 import { documentTypeText } from "../../documents";
 import { useCallback, useMemo } from "react";
+import { restrictPage } from "@modules/Auth";
 
 export const getServerSideProps = async (context) => {
+  await restrictPage(context);
+
   const { data } = await axios.get(
     `${process.env.API_PATH}works/${context.params.workId}`
   );

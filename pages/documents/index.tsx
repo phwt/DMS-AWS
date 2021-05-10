@@ -1,8 +1,11 @@
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { restrictPage } from "@modules/Auth";
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async (context) => {
+  await restrictPage(context);
+
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
 
   return {

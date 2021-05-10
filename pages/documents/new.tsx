@@ -2,6 +2,13 @@ import { Col, Form, Row } from "react-bootstrap";
 import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { restrictPage } from "@modules/Auth";
+
+export const getServerSideProps = async (context) => {
+  await restrictPage(context);
+
+  return { props: {} };
+};
 
 const DocumentNew = () => {
   const [name, setName] = useState("");

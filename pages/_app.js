@@ -1,14 +1,10 @@
 import "../styles/globals.scss";
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 function MyApp({ Component, pageProps }) {
   const [session, loading] = useSession();
-
-  if (loading) return null;
-
-  if (!loading && !session) signIn();
 
   return (
     <>
@@ -168,7 +164,7 @@ function MyApp({ Component, pageProps }) {
                       Login
                     </a>
                   </li> */}
-                  {!session && (
+                  {!loading && !session && (
                     <>
                       {/* Not signed in <br />
                       <button onClick={() => signIn()}>Sign in</button> */}
@@ -177,7 +173,7 @@ function MyApp({ Component, pageProps }) {
                       </div>
                     </>
                   )}
-                  {session && (
+                  {!loading && session && (
                     <>
                       <div className="nav-link" role="button">
                         <i className="fa fa-user" aria-hidden="true" />
