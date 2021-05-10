@@ -4,6 +4,7 @@ import { WorkTypeBadge } from "../index";
 import { documentTypeText } from "../../documents";
 import { useCallback, useMemo } from "react";
 import { restrictPage } from "@modules/Auth";
+import ActionCard from "@components/common/ActionCard";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -191,49 +192,39 @@ const Work = ({ work }) => {
 
       {work.state === "NEW" && (
         <div className="col-3 p-0">
-          <div className="card bg-dark mt-3">
-            <div className="card-header">
-              <h5 className="m-0">Action</h5>
-            </div>
-            <div className="card-body">
-              <button
-                className="btn btn-block btn-info"
-                onClick={async () => {
-                  await updateWorkState("REVIEW");
-                }}
-              >
-                Submit For Review
-              </button>
-            </div>
-          </div>
+          <ActionCard header="Action">
+            <button
+              className="btn btn-block btn-info"
+              onClick={async () => {
+                await updateWorkState("REVIEW");
+              }}
+            >
+              Submit For Review
+            </button>
+          </ActionCard>
         </div>
       )}
 
       {work.state === "REVIEW" && (
         <div className="col-3 p-0">
-          <div className="card bg-dark mt-3">
-            <div className="card-header">
-              <h5 className="m-0">Review Actions</h5>
-            </div>
-            <div className="card-body">
-              <button
-                className="btn btn-block btn-success"
-                onClick={async () => {
-                  await submitReviewAction(true);
-                }}
-              >
-                Approve
-              </button>
-              <button
-                className="btn btn-block btn-danger"
-                onClick={async () => {
-                  await submitReviewAction(false);
-                }}
-              >
-                Reject
-              </button>
-            </div>
-          </div>
+          <ActionCard header="Review Actions">
+            <button
+              className="btn btn-block btn-success"
+              onClick={async () => {
+                await submitReviewAction(true);
+              }}
+            >
+              Approve
+            </button>
+            <button
+              className="btn btn-block btn-danger"
+              onClick={async () => {
+                await submitReviewAction(false);
+              }}
+            >
+              Reject
+            </button>
+          </ActionCard>
         </div>
       )}
     </div>
