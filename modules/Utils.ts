@@ -26,15 +26,15 @@ export const uniqueFileName = (fileName: string) => {
     .substring(7)}${path.parse(fileName).ext}`;
 };
 
-export const S3Middleware = () => {
-  const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  });
+export const AWS_S3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
+export const S3Middleware = () => {
   const upload = multer({
     storage: multerS3({
-      s3,
+      s3: AWS_S3,
       bucket: process.env.S3_BUCKET,
       acl: "public-read", // TODO: Restrict access to Cognito user only
       contentType: multerS3.AUTO_CONTENT_TYPE,
