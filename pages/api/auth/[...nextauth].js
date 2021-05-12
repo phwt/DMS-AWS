@@ -9,7 +9,4 @@ export default NextAuth({
       domain: process.env.COGNITO_DOMAIN,
     }),
   ],
-  pages: {
-    signIn: "/auth/signin",
-  },
 });

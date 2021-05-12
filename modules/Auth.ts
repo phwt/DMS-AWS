@@ -9,7 +9,7 @@ export const restrictPage = async (context) => {
   const session = await getSession(context);
   if (!session) {
     context.res.statusCode = 302;
-    context.res.setHeader("Location", "/auth/signin"); // TODO: Add return address
+    context.res.setHeader("Location", "/api/auth/signin/");
   }
 };
 
