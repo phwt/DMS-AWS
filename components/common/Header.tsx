@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 const Header = () => {
   const [session, loading] = useSession();
+
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+
+    window.location.replace(
+      `https://${process.env.NEXT_PUBLIC_COGNITO_DOMAIN}/logout` +
+        `?client_id=${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}` +
+        `&redirect_uri=${encodeURIComponent(
+          process.env.NEXT_PUBLIC_BASE_PATH
+        )}` +
+        "&response_type=code"
+    );
+  }, []);
 
   return (
     <div className="row mt-5">
@@ -138,7 +151,11 @@ const Header = () => {
                       <i className="fa fa-user" aria-hidden="true" />
                       &nbsp;&nbsp;Signed in as {session.user.name}
                     </div>
-                    <div className="nav-link" onClick={signOut} role="button">
+                    <div
+                      className="nav-link"
+                      onClick={handleSignOut}
+                      role="button"
+                    >
                       Sign out
                     </div>
                   </>
