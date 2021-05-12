@@ -107,7 +107,7 @@ const DocumentList = ({ documents }) => {
           </tr>
 
           {documents.map((document) => (
-            <tr>
+            <tr key={document.id}>
               <td>{document.name}</td>
               <td>{documentTypeText(document.type)}</td>
               <td>

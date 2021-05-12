@@ -2,6 +2,7 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import { useState } from "react";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -28,8 +29,8 @@ export const WorkTypeBadge = ({ type }) => {
 
 const WorkList = ({ works }) => {
   const router = useRouter();
-  console.log(works);
-  const userGroup = "Employee";
+  const [userGroup] = useState("Employee");
+
   return (
     <>
       <h2 className="pb-5">View All Works</h2>
@@ -63,7 +64,7 @@ const WorkList = ({ works }) => {
             {works.map((work) => {
               if (!(userGroup === "Employee" && work.state === "REVIEW")) {
                 return (
-                  <tr>
+                  <tr key={work.id}>
                     <td>{work.document.name}</td>
                     <td>
                       <WorkTypeBadge type={work.type} />

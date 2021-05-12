@@ -125,7 +125,7 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.all.map((document) => (
-                <tr>
+                <tr key={document.id}>
                   <td>
                     <a
                       onClick={async (e) => {
@@ -162,7 +162,7 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.inProgress.map((document) => (
-                <tr>
+                <tr key={document.id}>
                   <td>
                     <a
                       onClick={async (e) => {
@@ -196,7 +196,7 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.released.map((document) => (
-                <tr>
+                <tr key={document.id}>
                   <td>
                     <a
                       onClick={async (e) => {
@@ -261,7 +261,7 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestWorks.all.map((work) => (
-                <tr>
+                <tr key={work.id}>
                   <td>
                     <a
                       onClick={async (e) => {
