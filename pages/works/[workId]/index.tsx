@@ -8,7 +8,6 @@ import ActionCard from "@components/common/ActionCard";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
-
   const { data } = await axios.get(
     `${process.env.API_PATH}works/${context.params.workId}`
   );
@@ -119,7 +118,7 @@ const Work = ({ work }) => {
     },
     [work]
   );
-
+  const userGroup = "DCC";
   return (
     <div>
       <div className="row">
@@ -190,7 +189,7 @@ const Work = ({ work }) => {
         </div>
       </div>
 
-      {work.state === "NEW" && (
+      {work.state === "NEW" && userGroup === "DCC" && (
         <div className="col-3 p-0">
           <ActionCard header="Action">
             <button
