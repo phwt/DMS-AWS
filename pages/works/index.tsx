@@ -61,7 +61,7 @@ const WorkList = ({ works }) => {
             </tr>
 
             {works.map((work) => {
-              if (userGroup !== "Employee" && work.state !== "REVIEW") {
+              if (!(userGroup === "Employee" && work.state === "REVIEW")) {
                 return (
                   <tr>
                     <td>{work.document.name}</td>
