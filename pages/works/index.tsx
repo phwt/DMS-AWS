@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
-import {restrictPage} from "@modules/Auth";
+import { restrictPage } from "@modules/Auth";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -28,7 +28,8 @@ export const WorkTypeBadge = ({ type }) => {
 
 const WorkList = ({ works }) => {
   const router = useRouter();
-
+  console.log(works);
+  const userGroup = "Employee";
   return (
     <>
       <h2 className="pb-5">View All Works</h2>
@@ -59,31 +60,35 @@ const WorkList = ({ works }) => {
               <td />
             </tr>
 
-            {works.map((work) => (
-              <tr>
-                <td>{work.document.name}</td>
-                <td>
-                  <WorkTypeBadge type={work.type} />
-                </td>
-                <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
-                <td>{work.create_date}</td>
-                <td>{work.complete_date ?? "-"}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-block"
-                    onClick={async () => {
-                      await router.push(`/works/${work.id}`);
-                    }}
-                  >
-                    <i
-                      className="fa fa-chevron-right text-info"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {works.map((work) => {
+              if (userGroup !== "Employee" && work.state !== "REVIEW") {
+                return (
+                  <tr>
+                    <td>{work.document.name}</td>
+                    <td>
+                      <WorkTypeBadge type={work.type} />
+                    </td>
+                    <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
+                    <td>{work.create_date}</td>
+                    <td>{work.complete_date ?? "-"}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-block"
+                        onClick={async () => {
+                          await router.push(`/works/${work.id}`);
+                        }}
+                      >
+                        <i
+                          className="fa fa-chevron-right text-info"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              }
+            })}
           </table>
         </div>
       </form>
