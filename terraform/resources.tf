@@ -162,6 +162,28 @@ resource "aws_security_group" "rds" {
   tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
 }
 
+resource "aws_security_group" "ecs" {
+  name        = "${lower(var.db_config.name)}_ecs_sg"
+  description = "Allow local 3000 traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  egress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_ecs_sg" })
+}
+
 # LOAD BALANCING #
 
 resource "aws_lb" "alb" {
