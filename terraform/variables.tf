@@ -16,6 +16,7 @@ variable "network_address_space" {
 variable "db_config" {
   type = map(string)
 }
+variable "ecs_task_execution_role_arn" {}
 
 locals {
   mandatory_tags = {
