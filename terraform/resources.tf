@@ -31,8 +31,9 @@ data "aws_ami" "aws-linux" {
 # NETWORKING #
 
 resource "aws_vpc" "vpc" {
-  cidr_block = var.network_address_space
-  tags       = merge(local.mandatory_tags, { Name = "${var.project_name}-VPC" })
+  cidr_block           = var.network_address_space
+  enable_dns_hostnames = true
+  tags                 = merge(local.mandatory_tags, { Name = "${var.project_name}-VPC" })
 }
 
 resource "aws_internet_gateway" "igw" {
