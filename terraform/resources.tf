@@ -4,6 +4,14 @@ provider "aws" {
   region     = var.region
 }
 
+terraform {
+  backend "s3" {
+    bucket = "dms-document-storage"
+    key    = "dms.tfstate"
+    region = "ap-southeast-1"
+  }
+}
+
 # DATA #
 
 data "aws_availability_zones" "available" {}
