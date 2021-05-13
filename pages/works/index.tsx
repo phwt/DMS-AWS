@@ -29,7 +29,6 @@ export const WorkTypeBadge = ({ type }) => {
 
 const WorkList = ({ works }) => {
   const router = useRouter();
-  const userGroup = "Employee";
   const workType = ["-", "Create", "Edit", "Cancel"];
   const workState = ["-", "NEW", "REVIEW", "COMPLETED"];
   const [typeSelect, setTypeSelect] = useState("-");
@@ -85,25 +84,25 @@ const WorkList = ({ works }) => {
             {works
               .filter((w) => w.type === typeSelect || typeSelect === "-")
               .filter((w) => w.state === stateSelect || stateSelect === "-")
-              .map((works) => {
-                if (!(userGroup === "Employee" && works.state === "REVIEW")) {
+              .map((work) => {
+                if (!(userGroup === "Employee" && work.state === "REVIEW")) {
                   return (
                     <tr key={work.id}>
-                      <td>{works.document.name}</td>
+                      <td>{work.document.name}</td>
                       <td>
-                        <WorkTypeBadge type={works.type} />
+                        <WorkTypeBadge type={work.type} />
                       </td>
                       <td>
-                        {works.state[0] + works.state.toLowerCase().slice(1)}
+                        {work.state[0] + work.state.toLowerCase().slice(1)}
                       </td>
-                      <td>{works.create_date}</td>
-                      <td>{works.complete_date ?? "-"}</td>
+                      <td>{work.create_date}</td>
+                      <td>{work.complete_date ?? "-"}</td>
                       <td>
                         <button
                           type="button"
                           className="btn btn-block"
                           onClick={async () => {
-                            await router.push(`/works/${works.id}`);
+                            await router.push(`/works/${work.id}`);
                           }}
                         >
                           <i
