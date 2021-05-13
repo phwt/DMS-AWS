@@ -5,6 +5,9 @@ WORKDIR /var/www
 
 COPY . /var/www
 
+RUN rm .env
+RUN mv .env.production .env
+
 RUN npm install
 RUN npx prisma generate
 
