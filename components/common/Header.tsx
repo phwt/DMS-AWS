@@ -140,7 +140,13 @@ const Header = () => {
 
                 {!loading && !session && (
                   <>
-                    <div className="nav-link" onClick={signIn} role="button">
+                    <div
+                      className="nav-link"
+                      onClick={() => {
+                        signIn("cognito");
+                      }}
+                      role="button"
+                    >
                       Sign in
                     </div>
                   </>
