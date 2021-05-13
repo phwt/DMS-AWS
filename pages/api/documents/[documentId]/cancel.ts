@@ -7,19 +7,21 @@ const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const result = await localPrisma.work.findMany({
-      include: {
-        document: true,
+    const result = await localPrisma.document.findMany({
+      where: {
+        state: "RELEASED",
       },
     });
 
     res.status(200).json(result);
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const body = req.body;
-    delete body["id"];
     const result = await localPrisma.work.create({
-      data: body,
+      data: {
+        type: "CANCEL",
+        detail: req.body.detail,
+        documentId: parseInt(<string>req.query.documentId),
+      },
     });
 
     res.status(200).json(result);

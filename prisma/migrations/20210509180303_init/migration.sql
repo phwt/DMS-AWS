@@ -1,0 +1,27 @@
+-- CreateTable
+CREATE TABLE `Document` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `type` ENUM('MANUAL', 'PROCEDURE', 'WORK_INSTRUCTION', 'FORM') NOT NULL,
+    `state` ENUM('IN_PROGRESS', 'RELEASED', 'OBSOLETE', 'RECALLED') NOT NULL DEFAULT 'IN_PROGRESS',
+    `fileLocation` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Work` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `type` ENUM('CREATE', 'EDIT', 'CANCEL') NOT NULL DEFAULT 'CREATE',
+    `state` ENUM('NEW', 'REVIEW', 'COMPLETED') NOT NULL DEFAULT 'NEW',
+    `detail` VARCHAR(191) NOT NULL,
+    `create_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `complete_date` DATETIME(3),
+    `documentId` INTEGER,
+    `editDocumentId` INTEGER,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Work` ADD FOREIGN KEY (`documentId`) REFERENCES `Document`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

@@ -1,10 +1,10 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Document {
@@ -13,7 +13,19 @@ model Document {
   type         DocumentType
   state        DocumentState @default(IN_PROGRESS)
   fileLocation String
-  Work         Work?
+  Work         Work[]
+}
+
+model Work {
+  id             Int       @id @default(autoincrement())
+  type           WorkType  @default(CREATE)
+  state          WorkState @default(NEW)
+  detail         String
+  create_date    DateTime  @default(now())
+  complete_date  DateTime?
+  documentId     Int?
+  editDocumentId Int?
+  document       Document? @relation(fields: [documentId], references: [id])
 }
 
 enum DocumentType {
@@ -28,17 +40,6 @@ enum DocumentState {
   RELEASED
   OBSOLETE
   RECALLED
-}
-
-model Work {
-  id            Int       @id @default(autoincrement())
-  type          WorkType  @default(CREATE)
-  state         WorkState @default(NEW)
-  detail        String
-  create_date   DateTime  @default(now())
-  complete_date DateTime?
-  documentId    Int?
-  document      Document? @relation(fields: [documentId], references: [id])
 }
 
 enum WorkType {

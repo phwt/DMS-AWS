@@ -2,8 +2,12 @@ import React from "react";
 import axios from "axios";
 import { DocumentStateBadge, documentTypeText } from "./documents";
 import { WorkTypeBadge } from "./works";
+import { useRouter } from "next/router";
+import { restrictPage } from "@modules/Auth";
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context) => {
+  await restrictPage(context);
+
   const { data } = await axios.get(`${process.env.API_PATH}dashboard/`);
 
   return {
@@ -66,6 +70,8 @@ const WorkSummaryCard = ({ value, text, variant }) => {
 };
 
 const Dashboard = ({ dashboard }) => {
+  const router = useRouter();
+
   return (
     <>
       <h2 className="pb-5">Dashboard</h2>
@@ -119,11 +125,21 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.all.map((document) => (
-                <tr>
-                  <td>{document.name}</td>
+                <tr key={document.id}>
+                  <td>
+                    <a
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await router.push(`/documents/${document.id}`);
+                      }}
+                      href="#"
+                    >
+                      {document.name}
+                    </a>
+                  </td>
                   <td>{documentTypeText(document.type)}</td>
                   <td>
-                    <DocumentStateBadge state={document.state} />{" "}
+                    <DocumentStateBadge state={document.state} />
                   </td>
                 </tr>
               ))}
@@ -146,8 +162,18 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.inProgress.map((document) => (
-                <tr>
-                  <td>{document.name}</td>
+                <tr key={document.id}>
+                  <td>
+                    <a
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await router.push(`/documents/${document.id}`);
+                      }}
+                      href="#"
+                    >
+                      {document.name}
+                    </a>
+                  </td>
                   <td>{documentTypeText(document.type)}</td>
                 </tr>
               ))}
@@ -170,8 +196,18 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestDocuments.released.map((document) => (
-                <tr>
-                  <td>{document.name}</td>
+                <tr key={document.id}>
+                  <td>
+                    <a
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await router.push(`/documents/${document.id}`);
+                      }}
+                      href="#"
+                    >
+                      {document.name}
+                    </a>
+                  </td>
                   <td>{documentTypeText(document.type)}</td>
                 </tr>
               ))}
@@ -225,8 +261,18 @@ const Dashboard = ({ dashboard }) => {
             </thead>
             <tbody>
               {dashboard.latestWorks.all.map((work) => (
-                <tr>
-                  <td>{work.document.name}</td>
+                <tr key={work.id}>
+                  <td>
+                    <a
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        await router.push(`/works/${work.id}`);
+                      }}
+                      href="#"
+                    >
+                      {work.document.name}
+                    </a>
+                  </td>
                   <td>
                     <WorkTypeBadge type={work.type} />
                   </td>

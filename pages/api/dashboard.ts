@@ -1,16 +1,17 @@
-import { PrismaClient } from "@prisma/client";
-import { apiWrapper } from "@modules/Utils";
+import { requestHandler } from "@modules/Utils";
 import { NextApiRequest, NextApiResponse } from "next";
+import nc from "next-connect";
+import { localPrisma } from "@modules/Prisma";
 
-const prisma = new PrismaClient();
+const handler = nc(requestHandler);
 
-export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   let result;
 
   const totalDocuments = async () => {
     const {
       count: { id },
-    } = await prisma.document.aggregate({
+    } = await localPrisma.document.aggregate({
       count: {
         id: true,
       },
@@ -21,7 +22,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
   const aggregateDocumentState = async (state) => {
     const {
       count: { id },
-    } = await prisma.document.aggregate({
+    } = await localPrisma.document.aggregate({
       count: {
         id: true,
       },
@@ -32,7 +33,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
     return id;
   };
   const latestDocuments = async () => {
-    return await prisma.document.findMany({
+    return await localPrisma.document.findMany({
       orderBy: {
         id: "desc",
       },
@@ -40,7 +41,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
     });
   };
   const latestDocumentsByState = async (state) => {
-    return await prisma.document.findMany({
+    return await localPrisma.document.findMany({
       where: {
         state,
       },
@@ -54,7 +55,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
   const totalWorks = async () => {
     const {
       count: { id },
-    } = await prisma.work.aggregate({
+    } = await localPrisma.work.aggregate({
       count: {
         id: true,
       },
@@ -65,7 +66,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
   const aggregateWorkType = async (type) => {
     const {
       count: { id },
-    } = await prisma.work.aggregate({
+    } = await localPrisma.work.aggregate({
       count: {
         id: true,
       },
@@ -76,7 +77,7 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
     return id;
   };
   const latestWorks = async () => {
-    return await prisma.work.findMany({
+    return await localPrisma.work.findMany({
       orderBy: {
         id: "desc",
       },
@@ -118,3 +119,5 @@ export default apiWrapper(async (req: NextApiRequest, res: NextApiResponse) => {
       break;
   }
 });
+
+export default handler;

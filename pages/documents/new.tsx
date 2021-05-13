@@ -1,12 +1,22 @@
 import { Col, Form, Row } from "react-bootstrap";
 import React, { useCallback, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { restrictPage } from "@modules/Auth";
+
+export const getServerSideProps = async (context) => {
+  await restrictPage(context);
+
+  return { props: {} };
+};
 
 const DocumentNew = () => {
   const [name, setName] = useState("");
   const [type, setType] = useState("MANUAL");
   const [detail, setDetail] = useState("");
   const [file, setFile] = useState<File>();
+
+  const router = useRouter();
 
   const submitRequest = useCallback(async () => {
     const formData = new FormData();
@@ -15,11 +25,13 @@ const DocumentNew = () => {
     formData.append("type", type);
     formData.append("detail", detail);
 
-    await axios.post("/api/documents/new", formData, {
+    const { data } = await axios.post("/api/documents/new", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+
+    await router.push(`/works/${data.id}`);
   }, [name, type, detail, file]);
 
   return (
