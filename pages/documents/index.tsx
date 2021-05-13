@@ -2,6 +2,7 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import { useState } from "react";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -43,6 +44,16 @@ export const documentTypeText = (type) => {
 
 const DocumentList = ({ documents }) => {
   const router = useRouter();
+  const documentType = ["-", "MANUAL", "PROCEDURE", "WORK_INSTRUCTION", "FORM"];
+  const documentState = [
+    "-",
+    "IN_PROGRESS",
+    "RELEASED",
+    "OBSOLETE",
+    "RECALLED",
+  ];
+  const [typeSelect, setTypeSelect] = useState("-");
+  const [stateSelect, setStateSelect] = useState("-");
 
   return (
     <>
@@ -98,37 +109,56 @@ const DocumentList = ({ documents }) => {
           <tr>
             <td />
             <td>
-              <Form.Control as="select" size="sm" />
+              <Form.Control
+                as="select"
+                size="sm"
+                onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
+              >
+                {documentType.map((type) => (
+                  <option>{type}</option>
+                ))}
+              </Form.Control>
             </td>
             <td>
-              <Form.Control as="select" size="sm" />
+              <Form.Control
+                as="select"
+                size="sm"
+                onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
+              >
+                {documentState.map((type) => (
+                  <option>{type}</option>
+                ))}
+              </Form.Control>
             </td>
             <td />
           </tr>
 
-          {documents.map((document) => (
-            <tr key={document.id}>
-              <td>{document.name}</td>
-              <td>{documentTypeText(document.type)}</td>
-              <td>
-                <DocumentStateBadge state={document.state} />
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-block"
-                  onClick={async () => {
-                    await router.push(`/documents/${document.id}`);
-                  }}
-                >
-                  <i
-                    className="fa fa-chevron-right text-info"
-                    aria-hidden="true"
-                  />
-                </button>
-              </td>
-            </tr>
-          ))}
+          {documents
+            .filter((d) => d.type === typeSelect || typeSelect === "-")
+            .filter((d) => d.state === stateSelect || stateSelect === "-")
+            .map((document) => (
+              <tr key={document.id}>
+                <td>{document.name}</td>
+                <td>{documentTypeText(document.type)}</td>
+                <td>
+                  <DocumentStateBadge state={document.state} />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={async () => {
+                      await router.push(`/documents/${document.id}`);
+                    }}
+                  >
+                    <i
+                      className="fa fa-chevron-right text-info"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
         </table>
       </div>
 
