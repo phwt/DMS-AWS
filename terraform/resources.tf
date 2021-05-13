@@ -168,18 +168,19 @@ resource "aws_security_group" "ecs" {
   description = "Allow local 3000 traffic"
   vpc_id      = aws_vpc.vpc.id
 
+  // TODO: Allow only 3000
   ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_ecs_sg" })
