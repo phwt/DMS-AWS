@@ -34,6 +34,8 @@ const WorkList = ({ works }) => {
   const workState = ["-", "NEW", "REVIEW", "COMPLETED"];
   const [typeSelect, setTypeSelect] = useState("-");
   const [stateSelect, setStateSelect] = useState("-");
+  const [userGroup] = useState("Employee");
+
   return (
     <>
       <h2 className="pb-5">View All Works</h2>
@@ -86,7 +88,7 @@ const WorkList = ({ works }) => {
               .map((works) => {
                 if (!(userGroup === "Employee" && works.state === "REVIEW")) {
                   return (
-                    <tr>
+                    <tr key={work.id}>
                       <td>{works.document.name}</td>
                       <td>
                         <WorkTypeBadge type={works.type} />

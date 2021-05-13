@@ -4,6 +4,7 @@ import { DocumentStateBadge } from "../index";
 import { restrictPage } from "@modules/Auth";
 import { Button } from "react-bootstrap";
 import ActionCard from "@components/common/ActionCard";
+import { useMemo } from "react";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -20,6 +21,10 @@ export const getServerSideProps = async (context) => {
 const Document = ({ document }) => {
   const router = useRouter();
   const { documentId } = router.query;
+
+  const mailToContent = useMemo(() => {
+    return `mailto:?body=${window.location}&subject=${document.name}`;
+  }, []);
 
   return (
     <>
@@ -76,10 +81,10 @@ const Document = ({ document }) => {
               >
                 <i className="fa fa-download mr-2" /> Download
               </a>
-              <Button block variant="secondary">
+              <a href={mailToContent} className="btn btn-block btn-secondary">
                 <i className="fa fa-paper-plane mr-2" />
                 Send
-              </Button>
+              </a>
             </ActionCard>
           </div>
         </div>
