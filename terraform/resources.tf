@@ -142,7 +142,7 @@ resource "aws_security_group" "allow_http" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = local.mandatory_tags
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_allow_http" })
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -164,7 +164,7 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.mandatory_tags
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_allow_ssh" })
 }
 
 // TODO: Allow only local traffic (VPC CIDR Block)
