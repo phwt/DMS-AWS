@@ -167,8 +167,9 @@ resource "aws_security_group" "allow_ssh" {
   tags = local.mandatory_tags
 }
 
-resource "aws_security_group" "rds" {
-  name        = "${lower(var.db_config.name)}_rds_sg"
+// TODO: Allow only local traffic (VPC CIDR Block)
+resource "aws_security_group" "mysql" {
+  name        = "${lower(var.db_config.name)}_mysql_sg"
   description = "Allow local MySQL (3306) traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -176,17 +177,17 @@ resource "aws_security_group" "rds" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_rds_sg" })
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_mysql_sg" })
 }
 
 resource "aws_security_group" "ecs" {
