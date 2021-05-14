@@ -444,3 +444,15 @@ resource "aws_ecs_service" "next" {
     target_group_arn = aws_lb_target_group.target_group.arn
   }
 }
+
+# S3 #
+
+resource "aws_s3_bucket" "document" {
+  bucket = "${lower(var.project_name)}-document-storage"
+  tags   = local.mandatory_tags
+}
+
+resource "aws_s3_bucket" "fs" {
+  bucket = "${lower(var.project_name)}-fs"
+  tags   = local.mandatory_tags
+}
