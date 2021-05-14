@@ -15,7 +15,7 @@ resource "aws_security_group" "allow_http" {
   }
 
   egress {
-    description      = "Accept all incoming traffic"
+    description      = "Allow all outgoing traffic"
     protocol         = "all"
     from_port        = 0
     to_port          = 0
@@ -23,7 +23,8 @@ resource "aws_security_group" "allow_http" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_allow_http" })
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_allow_http" })
+}
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -45,12 +46,12 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_allow_ssh" })
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_allow_ssh" })
 }
 
 // TODO: Allow only local traffic (VPC CIDR Block)
 resource "aws_security_group" "mysql" {
-  name        = "${lower(var.db_config.name)}_mysql_sg"
+  name        = "${lower(var.project_name)}_mysql_sg"
   description = "Allow local MySQL (3306) traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -68,11 +69,11 @@ resource "aws_security_group" "mysql" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_mysql_sg" })
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_mysql_sg" })
 }
 
 resource "aws_security_group" "ecs" {
-  name        = "${lower(var.db_config.name)}_ecs_sg"
+  name        = "${lower(var.project_name)}_ecs_sg"
   description = "Allow local 3000 traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -91,5 +92,5 @@ resource "aws_security_group" "ecs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.mandatory_tags, { Name = "${lower(var.db_config.name)}_ecs_sg" })
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_ecs_sg" })
 }
