@@ -6,7 +6,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "dms-document-storage"
+    bucket = "dms-fs"
     key    = "dms.tfstate"
     region = "ap-southeast-1"
   }
