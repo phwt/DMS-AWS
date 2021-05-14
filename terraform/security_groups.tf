@@ -25,6 +25,31 @@ resource "aws_security_group" "allow_http" {
 
   tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_allow_http" })
 }
+
+resource "aws_security_group" "allow_https" {
+  name        = "${lower(var.project_name)}_allow_https"
+  description = "Allow HTTPS (443) traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description      = "HTTP"
+    protocol         = "tcp"
+    from_port        = 443
+    to_port          = 443
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    description      = "Allow all outgoing traffic"
+    protocol         = "all"
+    from_port        = 0
+    to_port          = 0
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_allow_https" })
 }
 
 resource "aws_security_group" "allow_ssh" {
