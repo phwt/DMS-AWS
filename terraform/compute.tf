@@ -84,7 +84,6 @@ resource "aws_ecs_service" "next" {
   cluster                 = aws_ecs_cluster.ecs_cluster.id
   desired_count           = 2
   enable_ecs_managed_tags = true
-  iam_role                = "aws-service-role"
   launch_type             = "FARGATE"
   platform_version        = "LATEST"
   propagate_tags          = "TASK_DEFINITION"
