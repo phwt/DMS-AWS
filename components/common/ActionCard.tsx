@@ -7,7 +7,7 @@ interface Props {
 
 const ActionCard = ({ header, children }: Props) => {
   return (
-    <div className="card bg-dark w-100">
+    <div className="card bg-16 w-100">
       <div className="card-header">
         <h5>{header}</h5>
       </div>
