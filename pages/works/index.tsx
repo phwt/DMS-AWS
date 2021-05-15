@@ -3,15 +3,17 @@ import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
 import { useState } from "react";
+import { getSession } from "next-auth/client";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
-
+  const serverUser = await getSession(context);
   const { data } = await axios.get(`${process.env.API_PATH}works/`);
 
   return {
     props: {
       works: data,
+      serverUser,
     },
   };
 };
@@ -27,13 +29,13 @@ export const WorkTypeBadge = ({ type }) => {
   }
 };
 
-const WorkList = ({ works }) => {
+const WorkList = ({ works, serverUser }) => {
   const router = useRouter();
   const workType = ["-", "Create", "Edit", "Cancel"];
   const workState = ["-", "NEW", "REVIEW", "COMPLETED"];
   const [typeSelect, setTypeSelect] = useState("-");
   const [stateSelect, setStateSelect] = useState("-");
-  const [userGroup] = useState("Employee");
+  const [userGroup] = useState(serverUser.groups[0]);
 
   return (
     <>

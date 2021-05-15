@@ -2,18 +2,20 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { WorkTypeBadge } from "../index";
 import { documentTypeText } from "../../documents";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { restrictPage } from "@modules/Auth";
 import ActionCard from "@components/common/ActionCard";
+import { getSession } from "next-auth/client";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
+  const serverUser = await getSession(context);
   const { data } = await axios.get(
     `${process.env.API_PATH}works/${context.params.workId}`
   );
 
   return {
-    props: { work: data },
+    props: { work: data, serverUser },
   };
 };
 
@@ -60,9 +62,11 @@ const WorkStateBadges = ({ state }) => {
   );
 };
 
-const Work = ({ work }) => {
+const Work = ({ work, serverUser }) => {
   const router = useRouter();
   const { workId } = router.query;
+  const [userGroup] = useState(serverUser.groups[0]);
+  console.log(userGroup);
 
   const workTitle = useMemo(() => {
     switch (work.type) {
@@ -118,7 +122,6 @@ const Work = ({ work }) => {
     },
     [work]
   );
-  const userGroup = "DCC";
   return (
     <div>
       <div className="row">
@@ -189,7 +192,7 @@ const Work = ({ work }) => {
         </div>
       </div>
 
-      {work.state === "NEW" && userGroup === "DCC" && (
+      {work.state === "NEW" && userGroup === "DocumentControlClerk" && (
         <div className="col-3 p-0">
           <ActionCard header="Action">
             <button
