@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { DocumentStateBadge } from "../index";
 import { restrictPage } from "@modules/Auth";
-import { Button } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 import ActionCard from "@components/common/ActionCard";
 import { useMemo } from "react";
 
@@ -45,6 +45,17 @@ const Document = ({ document }) => {
                     <DocumentStateBadge state={document.state} />
                   </td>
                 </tr>
+                <tr>
+                  <td colSpan={2} className="text-danger">
+                    <Badge variant="danger" className="mr-2">
+                      Warning
+                    </Badge>
+                    This document and the information in it is confidential and
+                    may not be disclosed to any third party or used for any
+                    other purpose without the express written permission of the
+                    disclosing party
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -74,13 +85,15 @@ const Document = ({ document }) => {
 
           <div className="col-3">
             <ActionCard header="Actions">
-              <a
-                download={document.fileLocation}
-                href={document.file}
-                className="btn btn-block btn-info"
-              >
-                <i className="fa fa-download mr-2" /> Download
-              </a>
+              {!document.confidential && (
+                <a
+                  download={document.fileLocation}
+                  href={document.file}
+                  className="btn btn-block btn-info"
+                >
+                  <i className="fa fa-download mr-2" /> Download
+                </a>
+              )}
               <a href={mailToContent} className="btn btn-block btn-secondary">
                 <i className="fa fa-paper-plane mr-2" />
                 Send
