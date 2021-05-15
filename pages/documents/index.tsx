@@ -8,7 +8,7 @@ export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
-  data.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  data.sort((a, b) => (a.id < b.id ? 1 : -1));
   return {
     props: {
       documents: data,

@@ -7,7 +7,7 @@ export const getServerSideProps = async (context) => {
   await restrictPage(context);
   const serverUser = await getSession(context);
   const { data } = await axios.get(`${process.env.API_PATH}works/`);
-  data.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  data.sort((a, b) => (a.id < b.id ? 1 : -1));
   return {
     props: {
       works: data,
