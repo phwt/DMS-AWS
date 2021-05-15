@@ -6,7 +6,7 @@ resource "aws_security_group" "allow_https" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    description      = "HTTP"
+    description      = "HTTPS"
     protocol         = "tcp"
     from_port        = 443
     to_port          = 443
@@ -48,24 +48,25 @@ resource "aws_security_group" "allow_ssh" {
   tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_allow_ssh" })
 }
 
-// TODO: Allow only local traffic (VPC CIDR Block)
 resource "aws_security_group" "mysql" {
   name        = "${lower(var.project_name)}_mysql_sg"
   description = "Allow local MySQL (3306) traffic"
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
+    description = "MySQL (3306)"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   egress {
+    description = "Allow all outgoing local traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_mysql_sg" })
@@ -73,22 +74,22 @@ resource "aws_security_group" "mysql" {
 
 resource "aws_security_group" "ecs" {
   name        = "${lower(var.project_name)}_ecs_sg"
-  description = "Allow local 3000 traffic"
+  description = "Allow local HTTP traffic"
   vpc_id      = aws_vpc.vpc.id
 
-  // TODO: Allow only 3000
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP (80)"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_ecs_sg" })
