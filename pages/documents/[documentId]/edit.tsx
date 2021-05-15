@@ -84,6 +84,7 @@ const DocumentNew = ({ documents, serverUser }) => {
         <Col md={12} className="mt-2">
           <Form.File
             label="Document File"
+            accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
             }}

@@ -68,6 +68,7 @@ const DocumentNew = ({ serverUser }) => {
           <Form.File
             label="Document File"
             className="d-inline"
+            accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
             }}
