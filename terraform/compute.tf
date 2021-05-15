@@ -56,8 +56,8 @@ resource "aws_ecs_task_definition" "service" {
           "protocol" : "tcp"
         },
         {
-          "containerPort" : 3000,
-          "hostPort" : 3000,
+          "containerPort" : 80,
+          "hostPort" : 80,
           "protocol" : "tcp"
         }
       ],
@@ -99,7 +99,7 @@ resource "aws_ecs_service" "next" {
 
   load_balancer {
     container_name   = "dms"
-    container_port   = 3000
+    container_port   = 80
     target_group_arn = aws_lb_target_group.target_group.arn
   }
 }
