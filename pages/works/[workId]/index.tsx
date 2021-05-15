@@ -81,10 +81,9 @@ const Work = ({ work, serverUser }) => {
 
   const updateWorkState = useCallback(
     async (state) => {
-      await axios.patch(`${process.env.API_PATH}works/${workId}`, {
-        state,
-        complete_date: new Date(),
-      });
+      let data: any = { state };
+      if (state === "COMPLETED") data = { ...data, complete_date: new Date() };
+      await axios.patch(`${process.env.API_PATH}works/${workId}`, data);
       window.location.reload();
     },
     [work]
