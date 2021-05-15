@@ -8,7 +8,7 @@ export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
-
+  data.sort((a, b) => (a.id < b.id) ? 1 : -1)
   return {
     props: {
       documents: data,
@@ -106,64 +106,66 @@ const DocumentList = ({ documents }) => {
               <th />
             </tr>
           </thead>
-          <tr>
-            <td />
-            <td>
-              <Form.Control
-                as="select"
-                size="sm"
-                onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
-              >
-                {documentType.map((type) => (
-                  <option>{type}</option>
-                ))}
-              </Form.Control>
-            </td>
-            <td>
-              <Form.Control
-                as="select"
-                size="sm"
-                onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
-              >
-                {documentState.map((type) => (
-                  <option>{type}</option>
-                ))}
-              </Form.Control>
-            </td>
-            <td />
-          </tr>
+          <tbody>
+            <tr>
+              <td />
+              <td>
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
+                >
+                  {documentType.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </Form.Control>
+              </td>
+              <td>
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
+                >
+                  {documentState.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </Form.Control>
+              </td>
+              <td />
+            </tr>
 
-          {documents
-            .filter((d) => d.type === typeSelect || typeSelect === "-")
-            .filter((d) => d.state === stateSelect || stateSelect === "-")
-            .map((document) => (
-              <tr key={document.id}>
-                <td>
-                  {document.name}
-                  {document.confidential && (
-                    <i className="ml-2 fa fa-lock text-danger" />
-                  )}
-                </td>
-                <td>{documentTypeText(document.type)}</td>
-                <td>
-                  <DocumentStateBadge state={document.state} />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-block"
-                    onClick={async () => {
-                      await router.push(`/documents/${document.id}`);
-                    }}
-                  >
-                    <i
-                      className="fa fa-chevron-right text-info"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {documents
+              .filter((d) => d.type === typeSelect || typeSelect === "-")
+              .filter((d) => d.state === stateSelect || stateSelect === "-")
+              .map((document) => (
+                <tr key={document.id}>
+                  <td>
+                    {document.name}
+                    {document.confidential && (
+                      <i className="ml-2 fa fa-lock text-danger" />
+                    )}
+                  </td>
+                  <td>{documentTypeText(document.type)}</td>
+                  <td>
+                    <DocumentStateBadge state={document.state} />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={async () => {
+                        await router.push(`/documents/${document.id}`);
+                      }}
+                    >
+                      <i
+                        className="fa fa-chevron-right text-info"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
     </>
