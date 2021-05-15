@@ -48,6 +48,7 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
               <th scope="col">Related Document</th>
               <th scope="col">Type</th>
               <th scope="col">State</th>
+              <th scope="col">Create By</th>
               <th scope="col">Create Date</th>
               <th scope="col">Complete Date</th>
               <th scope="col" />
@@ -93,6 +94,7 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
                     <WorkTypeBadge type={work.type} />
                   </td>
                   <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
+                  <td>{work.create_by}</td>
                   <td>{work.create_date}</td>
                   <td>{work.complete_date ?? "-"}</td>
                   <td>
