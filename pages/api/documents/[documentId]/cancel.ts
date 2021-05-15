@@ -21,6 +21,7 @@ handler
         type: "CANCEL",
         detail: req.body.detail,
         documentId: parseInt(<string>req.query.documentId),
+        create_by: req.body.create_by,
       },
     });
 

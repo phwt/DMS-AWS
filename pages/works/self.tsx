@@ -25,11 +25,11 @@ const WorkList = ({ works, serverUser }) => {
   return (
     <>
       <Head>
-        <title>Work List</title>
+        <title>My Works</title>
       </Head>
 
-      <h2 className="pb-5">View All Works</h2>
-      <WorksTable works={works} user={serverUser} />
+      <h2 className="pb-5">My Works</h2>
+      <WorksTable works={works} user={serverUser} ownWork={true} />
     </>
   );
 };

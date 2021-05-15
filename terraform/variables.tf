@@ -16,6 +16,12 @@ variable "network_address_space" {
 variable "db_config" {
   type = map(string)
 }
+variable "cognito_config" {
+  type = map(any)
+}
+variable "certificate_domain_name" {}
+variable "certificate_subject_alternative_names" {}
+variable "ecs_task_execution_role_arn" {}
 
 locals {
   mandatory_tags = {

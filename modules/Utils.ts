@@ -3,6 +3,7 @@ import path from "path";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import AWS from "aws-sdk";
+import moment from "moment";
 
 /**
  * Request handler for use with next-connect
@@ -48,4 +49,8 @@ export const S3Middleware = () => {
 export const S3URLtoFileName = (url: string) => {
   const urls = url.split("/");
   return urls[urls.length - 1];
+};
+
+export const sortById = (array: any[]) => {
+  array.sort((a, b) => (a.id < b.id ? 1 : -1));
 };

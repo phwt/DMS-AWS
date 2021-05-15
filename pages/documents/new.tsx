@@ -3,17 +3,21 @@ import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import { getSession } from "next-auth/client";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
+  const serverUser = await getSession(context);
 
-  return { props: {} };
+  return { props: { serverUser } };
 };
 
-const DocumentNew = () => {
+const DocumentNew = ({ serverUser }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("MANUAL");
   const [detail, setDetail] = useState("");
+  const [confidential, setConfidential] = useState(false);
   const [file, setFile] = useState<File>();
 
   const router = useRouter();
@@ -24,6 +28,8 @@ const DocumentNew = () => {
     formData.append("name", name);
     formData.append("type", type);
     formData.append("detail", detail);
+    formData.append("confidential", confidential ? "1" : "0");
+    formData.append("create_by", serverUser.user.name);
 
     const { data } = await axios.post("/api/documents/new", formData, {
       headers: {
@@ -36,6 +42,10 @@ const DocumentNew = () => {
 
   return (
     <>
+      <Head>
+        <title>Document Creation Request</title>
+      </Head>
+
       <h2 className="pb-5">Document Creation Form</h2>
       <Form as={Row} encType="multipart/form-data">
         <Col md={6}>
@@ -61,13 +71,24 @@ const DocumentNew = () => {
           </Form.Control>
         </Col>
 
-        <Col md={12} className="mt-2">
-          <Form.Label>Document File</Form.Label>
+        <Col md={6} className="mt-2">
           <Form.File
-            label="Choose file"
-            custom
+            label="Document File"
+            className="d-inline"
+            accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
+            }}
+          />
+        </Col>
+
+        <Col md={6} className="mt-2">
+          <br />
+          <Form.Check
+            label="Confidential"
+            checked={confidential}
+            onChange={(e) => {
+              setConfidential(e.target.checked);
             }}
           />
         </Col>

@@ -20,8 +20,8 @@ const Header = () => {
 
   return (
     <div className="row mt-5">
-      <div className="col-0 col-lg-2" />
-      <div className="col-12 col-lg-8">
+      <div className="col-0 col-lg-1" />
+      <div className="col-12 col-lg-10">
         <nav className="navbar navbar-expand-lg navbar-dark">
           <a className="navbar-brand" href="/">
             <img
@@ -43,7 +43,7 @@ const Header = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav mr-auto">
-              <form
+              {/* <form
                 className="form-inline my-2 my-lg-0 ml-0 ml-lg-5"
                 method="get"
                 action="% url 'internal_doc' %}"
@@ -61,7 +61,7 @@ const Header = () => {
                 >
                   <i className="fa fa-search" />
                 </button>
-              </form>
+              </form> */}
             </ul>
             <span className="navbar-text">
               <ul className="navbar-nav mr-auto">
@@ -132,6 +132,12 @@ const Header = () => {
                         Work List
                       </a>
                     </Link>
+                    <Link href="/works/self">
+                      <a className="dropdown-item text-dark">
+                        <i className="fa fa-th-list mr-2" aria-hidden="true" />
+                        My Works
+                      </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="nav-item d-lg-inline d-none">
@@ -140,7 +146,13 @@ const Header = () => {
 
                 {!loading && !session && (
                   <>
-                    <div className="nav-link" onClick={signIn} role="button">
+                    <div
+                      className="nav-link"
+                      onClick={() => {
+                        signIn("cognito");
+                      }}
+                      role="button"
+                    >
                       Sign in
                     </div>
                   </>
@@ -165,7 +177,7 @@ const Header = () => {
           </div>
         </nav>
       </div>
-      <div className="col-0 col-lg-2" />
+      <div className="col-0 col-lg-1" />
     </div>
   );
 };

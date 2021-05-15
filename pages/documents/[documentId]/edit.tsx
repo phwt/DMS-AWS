@@ -2,19 +2,22 @@ import { Col, Form, Row } from "react-bootstrap";
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import {restrictPage} from "@modules/Auth";
+import { restrictPage } from "@modules/Auth";
+import { getSession } from "next-auth/client";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/x/cancel`);
+  const serverUser = await getSession(context);
 
   return {
-    props: { documents: data },
+    props: { documents: data, serverUser },
   };
 };
 
-const DocumentNew = ({ documents }) => {
+const DocumentNew = ({ documents, serverUser }) => {
   const router = useRouter();
   const { documentId: routerDocumentId } = router.query;
 
@@ -33,6 +36,7 @@ const DocumentNew = ({ documents }) => {
     formData.append("file", file);
     formData.append("detail", detail);
     formData.append("name", name);
+    formData.append("create_by", serverUser.user.name);
 
     const { data } = await axios.post(
       `${process.env.API_PATH}documents/${documentId}/edit`,
@@ -49,6 +53,10 @@ const DocumentNew = ({ documents }) => {
 
   return (
     <>
+      <Head>
+        <title>Document Edit Request</title>
+      </Head>
+
       <h2 className="pb-5">Document Edit Form</h2>
       <Form as={Row} encType="multipart/form-data">
         <Col md={12}>
@@ -79,10 +87,9 @@ const DocumentNew = ({ documents }) => {
         </Col>
 
         <Col md={12} className="mt-2">
-          <Form.Label>Document File</Form.Label>
           <Form.File
-            label="Choose file"
-            custom
+            label="Document File"
+            accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
             }}

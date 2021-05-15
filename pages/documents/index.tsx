@@ -2,12 +2,15 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
-import { useState } from "react";
+import React, { useState } from "react";
+import { sortById } from "@modules/Utils";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
+  sortById(data);
 
   return {
     props: {
@@ -57,6 +60,10 @@ const DocumentList = ({ documents }) => {
 
   return (
     <>
+      <Head>
+        <title>Document List</title>
+      </Head>
+
       {/* {% block title %}{{ doc_type|title }} Document List{% endblock %} */}
       <div className="row no-gutters">
         <div className="col-6">
@@ -106,94 +113,68 @@ const DocumentList = ({ documents }) => {
               <th />
             </tr>
           </thead>
-          <tr>
-            <td />
-            <td>
-              <Form.Control
-                as="select"
-                size="sm"
-                onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
-              >
-                {documentType.map((type) => (
-                  <option>{type}</option>
-                ))}
-              </Form.Control>
-            </td>
-            <td>
-              <Form.Control
-                as="select"
-                size="sm"
-                onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
-              >
-                {documentState.map((type) => (
-                  <option>{type}</option>
-                ))}
-              </Form.Control>
-            </td>
-            <td />
-          </tr>
+          <tbody>
+            <tr>
+              <td />
+              <td>
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
+                >
+                  {documentType.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </Form.Control>
+              </td>
+              <td>
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
+                >
+                  {documentState.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </Form.Control>
+              </td>
+              <td />
+            </tr>
 
-          {documents
-            .filter((d) => d.type === typeSelect || typeSelect === "-")
-            .filter((d) => d.state === stateSelect || stateSelect === "-")
-            .map((document) => (
-              <tr key={document.id}>
-                <td>{document.name}</td>
-                <td>{documentTypeText(document.type)}</td>
-                <td>
-                  <DocumentStateBadge state={document.state} />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-block"
-                    onClick={async () => {
-                      await router.push(`/documents/${document.id}`);
-                    }}
-                  >
-                    <i
-                      className="fa fa-chevron-right text-info"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {documents
+              .filter((d) => d.type === typeSelect || typeSelect === "-")
+              .filter((d) => d.state === stateSelect || stateSelect === "-")
+              .map((document) => (
+                <tr key={document.id}>
+                  <td>
+                    {document.name}
+                    {document.confidential && (
+                      <i className="ml-2 fa fa-lock text-danger" />
+                    )}
+                  </td>
+                  <td>{documentTypeText(document.type)}</td>
+                  <td>
+                    <DocumentStateBadge state={document.state} />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={async () => {
+                        await router.push(`/documents/${document.id}`);
+                      }}
+                    >
+                      <i
+                        className="fa fa-chevron-right text-info"
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
-
-      {/* {% if documents.has_other_pages %}
-<nav>
-	<ul class="pagination">
-		{% if documents.has_previous %}
-		<li class="page-item btn-dark">
-			<a class="page-link" href="?page={{ documents.previous_page_number }}">&laquo;</a>
-		</li>
-		{% else %}
-		<li class="disabled page-item">
-			<a class="page-link" href="#">&laquo;</a>
-		</li>
-		{% endif %} {% for i in documents.paginator.page_range %} {% if
-		documents.number == i %}
-		<li class="active page-item active">
-			<a class="page-link" href="#">{{ i }}</a>
-		</li>
-		{% else %}
-		<li class="page-item">
-			<a class="page-link" href="?page={{ i }}">{{ i }}</a>
-		</li>
-		{% endif %} {% endfor %} {% if documents.has_next %}
-		<li class="page-item">
-			<a class="page-link" href="?page={{ documents.next_page_number }}">&raquo;</a>
-		</li>
-		{% else %}
-		<li class="disabled page-item">
-			<a class="page-link" href="#">&raquo;</a>
-		</li>
-		{% endif %}
-	</ul>
-</nav>
-{% endif %} */}
     </>
   );
 };

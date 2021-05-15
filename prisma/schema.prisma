@@ -13,6 +13,7 @@ model Document {
   type         DocumentType
   state        DocumentState @default(IN_PROGRESS)
   fileLocation String
+  confidential Boolean       @default(false)
   Work         Work[]
 }
 
@@ -25,6 +26,7 @@ model Work {
   complete_date  DateTime?
   documentId     Int?
   editDocumentId Int?
+  create_by      String
   document       Document? @relation(fields: [documentId], references: [id])
 }
 
