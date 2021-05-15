@@ -43,7 +43,7 @@ const Header = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav mr-auto">
-              <form
+              {/* <form
                 className="form-inline my-2 my-lg-0 ml-0 ml-lg-5"
                 method="get"
                 action="% url 'internal_doc' %}"
@@ -61,7 +61,7 @@ const Header = () => {
                 >
                   <i className="fa fa-search" />
                 </button>
-              </form>
+              </form> */}
             </ul>
             <span className="navbar-text">
               <ul className="navbar-nav mr-auto">
