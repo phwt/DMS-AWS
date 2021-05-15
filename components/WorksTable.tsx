@@ -62,7 +62,7 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
                 onChange={(e) => setTypeSelect(e.target.value.toUpperCase())}
               >
                 {workType.map((type) => (
-                  <option>{type}</option>
+                  <option key={type}>{type}</option>
                 ))}
               </Form.Control>
             </td>
@@ -73,7 +73,7 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
                 onChange={(e) => setStateSelect(e.target.value.toUpperCase())}
               >
                 {workState.map((type) => (
-                  <option>{type}</option>
+                  <option key={type}>{type}</option>
                 ))}
               </Form.Control>
             </td>
