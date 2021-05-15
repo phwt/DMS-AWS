@@ -65,10 +65,9 @@ const DocumentNew = ({ serverUser }) => {
         </Col>
 
         <Col md={12} className="mt-2">
-          <Form.Label>Document File</Form.Label>
           <Form.File
-            label="Choose file"
-            custom
+            label="Document File"
+            className="d-inline"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
             }}
