@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { WorkTypeBadge } from "../pages/works";
+import WorkTypeBadge from "@components/WorkTypeBadge";
 import { useRouter } from "next/router";
 import { useState } from "react";
 

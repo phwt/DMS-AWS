@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { DocumentStateBadge, documentTypeText } from "./documents";
-import { WorkTypeBadge } from "./works";
+import WorkTypeBadge from "@components/WorkTypeBadge";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
 
