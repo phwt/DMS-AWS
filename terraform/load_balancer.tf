@@ -30,26 +30,6 @@ resource "aws_lb_target_group" "target_group" {
   tags = local.mandatory_tags
 }
 
-resource "aws_lb_target_group" "target_group_https" {
-  name        = "${var.project_name}-alb-https-tg"
-  port        = 443
-  protocol    = "HTTPS"
-  target_type = "ip"
-  vpc_id      = aws_vpc.vpc.id
-
-  health_check {
-    protocol            = "HTTP"
-    path                = "/api/health-check"
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
-    timeout             = 5
-    interval            = 30
-    matcher             = "200"
-  }
-
-  tags = local.mandatory_tags
-}
-
 resource "aws_lb_listener" "alb_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
@@ -58,6 +38,6 @@ resource "aws_lb_listener" "alb_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group_https.arn
+    target_group_arn = aws_lb_target_group.target_group.arn
   }
 }

@@ -80,15 +80,16 @@ resource "aws_ecs_task_definition" "service" {
 }
 
 resource "aws_ecs_service" "next" {
-  name                    = "dms-service"
-  cluster                 = aws_ecs_cluster.ecs_cluster.id
-  desired_count           = 2
-  enable_ecs_managed_tags = true
-  launch_type             = "FARGATE"
-  platform_version        = "LATEST"
-  propagate_tags          = "TASK_DEFINITION"
-  scheduling_strategy     = "REPLICA"
-  task_definition         = aws_ecs_task_definition.service.arn
+  name                              = "dms-service"
+  cluster                           = aws_ecs_cluster.ecs_cluster.id
+  desired_count                     = 2
+  enable_ecs_managed_tags           = true
+  launch_type                       = "FARGATE"
+  platform_version                  = "LATEST"
+  propagate_tags                    = "TASK_DEFINITION"
+  scheduling_strategy               = "REPLICA"
+  task_definition                   = aws_ecs_task_definition.service.arn
+  health_check_grace_period_seconds = 180
 
   network_configuration {
     assign_public_ip = true
@@ -99,6 +100,6 @@ resource "aws_ecs_service" "next" {
   load_balancer {
     container_name   = "dms"
     container_port   = 3000
-    target_group_arn = aws_lb_target_group.target_group_https.arn
+    target_group_arn = aws_lb_target_group.target_group.arn
   }
 }
