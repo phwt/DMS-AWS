@@ -7,11 +7,11 @@ function MyApp({ Component, pageProps }) {
     <>
       <Header />
       <div className="container-fluid row m-0 p-0 mt-5 mb-5">
-        <div className="col-0 col-lg-2" />
-        <div className="col-12 col-lg-8 shadow p-5 h-100 round bg-19 text-light center-cnt">
+        <div className="col-0 col-lg-1" />
+        <div className="col-12 col-lg-10 shadow p-5 h-100 round bg-19 text-light center-cnt">
           <Component {...pageProps} />
         </div>
-        <div className="col-0 col-lg-2" />
+        <div className="col-0 col-lg-1" />
       </div>
     </>
   );

@@ -20,8 +20,8 @@ const Header = () => {
 
   return (
     <div className="row mt-5">
-      <div className="col-0 col-lg-2" />
-      <div className="col-12 col-lg-8">
+      <div className="col-0 col-lg-1" />
+      <div className="col-12 col-lg-10">
         <nav className="navbar navbar-expand-lg navbar-dark">
           <a className="navbar-brand" href="/">
             <img
@@ -177,7 +177,7 @@ const Header = () => {
           </div>
         </nav>
       </div>
-      <div className="col-0 col-lg-2" />
+      <div className="col-0 col-lg-1" />
     </div>
   );
 };
