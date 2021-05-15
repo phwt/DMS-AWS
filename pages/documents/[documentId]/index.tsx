@@ -47,17 +47,19 @@ const Document = ({ document }) => {
                     <DocumentStateBadge state={document.state} />
                   </td>
                 </tr>
-                <tr>
-                  <td colSpan={2} className="text-danger">
-                    <Badge variant="danger" className="mr-2">
-                      Warning
-                    </Badge>
-                    This document and the information in it is confidential and
-                    may not be disclosed to any third party or used for any
-                    other purpose without the express written permission of the
-                    disclosing party
-                  </td>
-                </tr>
+                {document.confidential && (
+                  <tr>
+                    <td colSpan={2} className="text-danger">
+                      <Badge variant="danger" className="mr-2">
+                        Warning
+                      </Badge>
+                      This document and the information in it is confidential
+                      and may not be disclosed to any third party or used for
+                      any other purpose without the express written permission
+                      of the disclosing party
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
