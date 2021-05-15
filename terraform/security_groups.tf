@@ -86,10 +86,11 @@ resource "aws_security_group" "ecs" {
   }
 
   egress {
+    description = "Allow all outgoing traffic - in order to pull secrets and image from ECR"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [aws_vpc.vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = merge(local.mandatory_tags, { Name = "${lower(var.project_name)}_ecs_sg" })
