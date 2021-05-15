@@ -16,6 +16,7 @@ const DocumentNew = ({ serverUser }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("MANUAL");
   const [detail, setDetail] = useState("");
+  const [confidential, setConfidential] = useState(false);
   const [file, setFile] = useState<File>();
 
   const router = useRouter();
@@ -26,6 +27,7 @@ const DocumentNew = ({ serverUser }) => {
     formData.append("name", name);
     formData.append("type", type);
     formData.append("detail", detail);
+    formData.append("confidential", confidential ? "1" : "0");
     formData.append("create_by", serverUser.user.name);
 
     const { data } = await axios.post("/api/documents/new", formData, {
@@ -64,13 +66,24 @@ const DocumentNew = ({ serverUser }) => {
           </Form.Control>
         </Col>
 
-        <Col md={12} className="mt-2">
+        <Col md={6} className="mt-2">
           <Form.File
             label="Document File"
             className="d-inline"
             accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFile(Array.from(e.target.files)[0]);
+            }}
+          />
+        </Col>
+
+        <Col md={6} className="mt-2">
+          <br />
+          <Form.Check
+            label="Confidential"
+            checked={confidential}
+            onChange={(e) => {
+              setConfidential(e.target.checked);
             }}
           />
         </Col>
