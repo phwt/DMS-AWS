@@ -132,6 +132,12 @@ const Header = () => {
                         Work List
                       </a>
                     </Link>
+                    <Link href="/works/self">
+                      <a className="dropdown-item text-dark">
+                        <i className="fa fa-th-list mr-2" aria-hidden="true" />
+                        My Works
+                      </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="nav-item d-lg-inline d-none">
