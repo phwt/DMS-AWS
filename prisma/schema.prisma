@@ -26,6 +26,7 @@ model Work {
   complete_date  DateTime?
   documentId     Int?
   editDocumentId Int?
+  create_by      String
   document       Document? @relation(fields: [documentId], references: [id])
 }
 

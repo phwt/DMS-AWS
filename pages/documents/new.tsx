@@ -3,14 +3,16 @@ import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import { getSession } from "next-auth/client";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
+  const serverUser = await getSession(context);
 
-  return { props: {} };
+  return { props: { serverUser } };
 };
 
-const DocumentNew = () => {
+const DocumentNew = ({ serverUser }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("MANUAL");
   const [detail, setDetail] = useState("");
@@ -24,6 +26,7 @@ const DocumentNew = () => {
     formData.append("name", name);
     formData.append("type", type);
     formData.append("detail", detail);
+    formData.append("create_by", serverUser.user.name);
 
     const { data } = await axios.post("/api/documents/new", formData, {
       headers: {

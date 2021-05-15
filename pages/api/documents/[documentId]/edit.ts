@@ -19,6 +19,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
       type: "EDIT",
       detail: req.body.detail,
       editDocumentId: parseInt(<string>req.query.documentId),
+      create_by: req.body.create_by,
       document: {
         create: {
           name: req.body.name,

@@ -3,18 +3,20 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import { getSession } from "next-auth/client";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/x/cancel`);
+  const serverUser = await getSession(context);
 
   return {
-    props: { documents: data },
+    props: { documents: data, serverUser },
   };
 };
 
-const DocumentNew = ({ documents }) => {
+const DocumentNew = ({ documents, serverUser }) => {
   const router = useRouter();
   const { documentId: routerDocumentId } = router.query;
 
@@ -30,6 +32,7 @@ const DocumentNew = ({ documents }) => {
     const { data } = await axios.post(
       `${process.env.API_PATH}documents/${documentId}/cancel`,
       {
+        create_by: serverUser.user.name,
         detail,
       }
     );

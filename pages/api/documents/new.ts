@@ -11,6 +11,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const result = await localPrisma.work.create({
     data: {
       detail: req.body.detail,
+      create_by: req.body.create_by,
       document: {
         create: {
           name: req.body.name,
