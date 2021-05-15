@@ -2,6 +2,11 @@ import { Form } from "react-bootstrap";
 import WorkTypeBadge from "@components/WorkTypeBadge";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
+import moment from "moment";
+
+export const formatDateTime = (dateString: string) => {
+  return moment(dateString).format("DD-MM-YYYY | HH:mm:ss");
+};
 
 interface Props {
   works: any[];
@@ -95,8 +100,12 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
                   </td>
                   <td>{work.state[0] + work.state.toLowerCase().slice(1)}</td>
                   <td>{work.create_by}</td>
-                  <td>{work.create_date}</td>
-                  <td>{work.complete_date ?? "-"}</td>
+                  <td>{formatDateTime(work.create_date)}</td>
+                  <td>
+                    {work.complete_date
+                      ? formatDateTime(work.complete_date)
+                      : "-"}
+                  </td>
                   <td>
                     <button
                       type="button"
