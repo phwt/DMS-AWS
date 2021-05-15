@@ -19,6 +19,8 @@ variable "db_config" {
 variable "cognito_config" {
   type = map(any)
 }
+variable "certificate_domain_name" {}
+variable "certificate_subject_alternative_names" {}
 variable "ecs_task_execution_role_arn" {}
 
 locals {

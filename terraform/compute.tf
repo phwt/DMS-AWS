@@ -99,6 +99,6 @@ resource "aws_ecs_service" "next" {
   load_balancer {
     container_name   = "dms"
     container_port   = 3000
-    target_group_arn = aws_lb_target_group.target_group.arn
+    target_group_arn = aws_lb_target_group.target_group_https.arn
   }
 }
