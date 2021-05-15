@@ -135,6 +135,9 @@ const Dashboard = ({ dashboard }) => {
                       href="#"
                     >
                       {document.name}
+                      {document.confidential && (
+                        <i className="ml-2 fa fa-lock text-danger" />
+                      )}
                     </a>
                   </td>
                   <td>{documentTypeText(document.type)}</td>
@@ -172,6 +175,9 @@ const Dashboard = ({ dashboard }) => {
                       href="#"
                     >
                       {document.name}
+                      {document.confidential && (
+                        <i className="ml-2 fa fa-lock text-danger" />
+                      )}
                     </a>
                   </td>
                   <td>{documentTypeText(document.type)}</td>
@@ -206,6 +212,9 @@ const Dashboard = ({ dashboard }) => {
                       href="#"
                     >
                       {document.name}
+                      {document.confidential && (
+                        <i className="ml-2 fa fa-lock text-danger" />
+                      )}
                     </a>
                   </td>
                   <td>{documentTypeText(document.type)}</td>
