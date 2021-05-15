@@ -5,6 +5,7 @@ import { documentTypeText } from "../../documents";
 import { useCallback, useMemo, useState } from "react";
 import { restrictPage } from "@modules/Auth";
 import ActionCard from "@components/common/ActionCard";
+import { Row, Col } from "react-bootstrap";
 import { getSession } from "next-auth/client";
 
 export const getServerSideProps = async (context) => {
@@ -66,7 +67,6 @@ const Work = ({ work, serverUser }) => {
   const router = useRouter();
   const { workId } = router.query;
   const [userGroup] = useState(serverUser.groups[0]);
-  console.log(userGroup);
 
   const workTitle = useMemo(() => {
     switch (work.type) {
@@ -123,8 +123,8 @@ const Work = ({ work, serverUser }) => {
     [work]
   );
   return (
-    <div>
-      <div className="row">
+    <>
+      <Row>
         <div className="col-3">
           <h2 className="pb-5">Work Detail</h2>
         </div>
@@ -133,14 +133,14 @@ const Work = ({ work, serverUser }) => {
             <WorkStateBadges state={work.state} />
           </div>
         </div>
-      </div>
+      </Row>
 
       <h3>{workTitle}</h3>
       <p className="text-muted">
         <small>{work.create_date}</small>
       </p>
-      <div className="row">
-        <div className="col-6">
+      <Row>
+        <Col>
           <div className="pl-0">
             <table className="table table-borderless text-light">
               <tbody>
@@ -165,11 +165,10 @@ const Work = ({ work, serverUser }) => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="col-1" />
-        <div className="col-4">
-          <div className="row">
-            <div className="card bg-dark w-100">
+        </Col>
+        <Col>
+          <Row>
+            <div className="card bg-16 w-100">
               <div className="card-header">
                 <h5>Related Document</h5>
               </div>
@@ -188,48 +187,46 @@ const Work = ({ work, serverUser }) => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {work.state === "NEW" && userGroup === "DocumentControlClerk" && (
-        <div className="col-3 p-0">
-          <ActionCard header="Action">
-            <button
-              className="btn btn-block btn-info"
-              onClick={async () => {
-                await updateWorkState("REVIEW");
-              }}
-            >
-              Submit For Review
-            </button>
-          </ActionCard>
-        </div>
-      )}
-
-      {work.state === "REVIEW" && (
-        <div className="col-3 p-0">
-          <ActionCard header="Review Actions">
-            <button
-              className="btn btn-block btn-success"
-              onClick={async () => {
-                await submitReviewAction(true);
-              }}
-            >
-              Approve
-            </button>
-            <button
-              className="btn btn-block btn-danger"
-              onClick={async () => {
-                await submitReviewAction(false);
-              }}
-            >
-              Reject
-            </button>
-          </ActionCard>
-        </div>
-      )}
-    </div>
+          </Row>
+        </Col>
+        {work.state === "REVIEW" && userGroup === "DocumentControlClerk" && (
+          <Col>
+            <ActionCard header="Review Actions">
+              <button
+                className="btn btn-block btn-success"
+                onClick={async () => {
+                  await submitReviewAction(true);
+                }}
+              >
+                Approve
+              </button>
+              <button
+                className="btn btn-block btn-danger"
+                onClick={async () => {
+                  await submitReviewAction(false);
+                }}
+              >
+                Reject
+              </button>
+            </ActionCard>
+          </Col>
+        )}
+        {work.state === "NEW" && userGroup === "Employee" && (
+          <Col>
+            <ActionCard header="Action">
+              <button
+                className="btn btn-block btn-info"
+                onClick={async () => {
+                  await updateWorkState("REVIEW");
+                }}
+              >
+                Submit For Review
+              </button>
+            </ActionCard>
+          </Col>
+        )}
+      </Row>
+    </>
   );
 };
 
