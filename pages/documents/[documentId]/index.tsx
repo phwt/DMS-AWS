@@ -23,7 +23,9 @@ const Document = ({ document }) => {
   const { documentId } = router.query;
 
   const mailToContent = useMemo(() => {
-    return `mailto:?body=${window.location}&subject=${document.name}`;
+    if (process.browser)
+      return `mailto:?body=${window.location}&subject=${document.name}`;
+    return "";
   }, []);
 
   return (
