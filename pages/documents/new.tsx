@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
 import { getSession } from "next-auth/client";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -41,6 +42,10 @@ const DocumentNew = ({ serverUser }) => {
 
   return (
     <>
+      <Head>
+        <title>Document Creation Request</title>
+      </Head>
+
       <h2 className="pb-5">Document Creation Form</h2>
       <Form as={Row} encType="multipart/form-data">
         <Col md={6}>

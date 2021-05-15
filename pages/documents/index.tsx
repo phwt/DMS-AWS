@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
 import React, { useState } from "react";
 import { sortById } from "@modules/Utils";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -59,6 +60,10 @@ const DocumentList = ({ documents }) => {
 
   return (
     <>
+      <Head>
+        <title>Document List</title>
+      </Head>
+
       {/* {% block title %}{{ doc_type|title }} Document List{% endblock %} */}
       <div className="row no-gutters">
         <div className="col-6">

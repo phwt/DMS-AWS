@@ -2,11 +2,12 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import WorkTypeBadge from "@components/WorkTypeBadge";
 import { documentTypeText } from "../../documents";
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { restrictPage } from "@modules/Auth";
 import ActionCard from "@components/common/ActionCard";
 import { Row, Col } from "react-bootstrap";
 import { getSession } from "next-auth/client";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -123,6 +124,10 @@ const Work = ({ work, serverUser }) => {
   );
   return (
     <>
+      <Head>
+        <title>Work | {work.document.name}</title>
+      </Head>
+
       <Row>
         <div className="col-3">
           <h2 className="pb-5">Work Detail</h2>

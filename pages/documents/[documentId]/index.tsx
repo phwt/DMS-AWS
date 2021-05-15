@@ -4,7 +4,8 @@ import { DocumentStateBadge } from "../index";
 import { restrictPage } from "@modules/Auth";
 import { Badge } from "react-bootstrap";
 import ActionCard from "@components/common/ActionCard";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -30,6 +31,10 @@ const Document = ({ document }) => {
 
   return (
     <>
+      <Head>
+        <title>Document | {document.name}</title>
+      </Head>
+
       <div>
         <h2 className="pb-5">Document Detail</h2>
         <div className="row mb-5">

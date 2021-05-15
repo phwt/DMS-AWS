@@ -4,6 +4,7 @@ import { DocumentStateBadge, documentTypeText } from "./documents";
 import WorkTypeBadge from "@components/WorkTypeBadge";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
+import Head from "next/head";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
@@ -70,6 +71,10 @@ const Dashboard = ({ dashboard }) => {
 
   return (
     <>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
+
       <h2 className="pb-5">Dashboard</h2>
       {/* {# Document Part #} */}
       <div className="row">
