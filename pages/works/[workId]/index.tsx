@@ -211,7 +211,7 @@ const Work = ({ work, serverUser }) => {
             </ActionCard>
           </Col>
         )}
-        {work.state === "NEW" && userGroup === "Employee" && (
+        {work.state === "NEW" && (
           <Col>
             <ActionCard header="Action">
               <button
