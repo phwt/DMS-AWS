@@ -13,6 +13,7 @@ model Document {
   type         DocumentType
   state        DocumentState @default(IN_PROGRESS)
   fileLocation String
+  confidential Boolean       @default(false)
   Work         Work[]
 }
 
