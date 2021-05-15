@@ -3,12 +3,14 @@ import { Form } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { restrictPage } from "@modules/Auth";
 import React, { useState } from "react";
+import { sortById } from "@modules/Utils";
 
 export const getServerSideProps = async (context) => {
   await restrictPage(context);
 
   const { data } = await axios.get(`${process.env.API_PATH}documents/`);
-  data.sort((a, b) => (a.id < b.id ? 1 : -1));
+  sortById(data);
+
   return {
     props: {
       documents: data,

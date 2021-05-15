@@ -49,3 +49,7 @@ export const S3URLtoFileName = (url: string) => {
   const urls = url.split("/");
   return urls[urls.length - 1];
 };
+
+export const sortById = (array: any[]) => {
+  array.sort((a, b) => (a.id < b.id ? 1 : -1));
+};
