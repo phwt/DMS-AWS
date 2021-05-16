@@ -16,6 +16,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
         create: {
           name: req.body.name,
           type: req.body.type,
+          departmentId: parseInt(req.body.department),
           fileLocation: S3URLtoFileName(req.files[0].location),
           confidential: parseInt(req.body.confidential) === 1,
         },
