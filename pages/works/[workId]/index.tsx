@@ -152,6 +152,10 @@ const Work = ({ work, serverUser }) => {
                   <td>{work.detail}</td>
                 </tr>
                 <tr>
+                  <th scope="row">Department</th>
+                  <td>{work.document.department.name}</td>
+                </tr>
+                <tr>
                   <th scope="row">Type</th>
                   <td>
                     <WorkTypeBadge type={work.type} />

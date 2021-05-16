@@ -14,7 +14,11 @@ handler
         id: parseInt(<string>query.workId),
       },
       include: {
-        document: true,
+        document: {
+          include: {
+            department: { select: { name: true } },
+          },
+        },
       },
     });
 
