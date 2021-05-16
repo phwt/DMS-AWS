@@ -67,7 +67,6 @@ const WorkStateBadges = ({ state }) => {
 const Work = ({ work, serverUser }) => {
   const router = useRouter();
   const { workId } = router.query;
-  const [userGroup] = useState(serverUser.groups[0]);
 
   const workTitle = useMemo(() => {
     switch (work.type) {
@@ -193,28 +192,31 @@ const Work = ({ work, serverUser }) => {
             </div>
           </Row>
         </Col>
-        {work.state === "REVIEW" && userGroup === "DocumentControlClerk" && (
-          <Col>
-            <ActionCard header="Review Actions">
-              <button
-                className="btn btn-block btn-success"
-                onClick={async () => {
-                  await submitReviewAction(true);
-                }}
-              >
-                Approve
-              </button>
-              <button
-                className="btn btn-block btn-danger"
-                onClick={async () => {
-                  await submitReviewAction(false);
-                }}
-              >
-                Reject
-              </button>
-            </ActionCard>
-          </Col>
-        )}
+        {work.state === "REVIEW" &&
+          serverUser.groups.filter((i) =>
+            ["DCC", "MR", "VP", "SVP"].includes(i)
+          ) && (
+            <Col>
+              <ActionCard header="Review Actions">
+                <button
+                  className="btn btn-block btn-success"
+                  onClick={async () => {
+                    await submitReviewAction(true);
+                  }}
+                >
+                  Approve
+                </button>
+                <button
+                  className="btn btn-block btn-danger"
+                  onClick={async () => {
+                    await submitReviewAction(false);
+                  }}
+                >
+                  Reject
+                </button>
+              </ActionCard>
+            </Col>
+          )}
         {work.state === "NEW" && (
           <Col>
             <ActionCard header="Action">
