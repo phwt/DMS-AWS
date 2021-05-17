@@ -121,7 +121,7 @@ const Dashboard = ({ dashboard }) => {
         {/* {# Document list last 10 #} */}
         <div className="col-12 col-lg-6">
           <div className="bg-0 pl-3 pr-1 pt-2 mt-3">
-            <h4 className="m-0">Documents</h4>
+            <h4>Documents</h4>
             <p className="m-0 text-muted">Latest 10 Documents</p>
           </div>
           <table className="table table-borderless text-light" id="internal">
