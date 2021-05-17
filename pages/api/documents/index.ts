@@ -7,7 +7,13 @@ const handler = nc(requestHandler);
 
 handler
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const result = await localPrisma.document.findMany();
+    const result = await localPrisma.document.findMany({
+      include: {
+        department: {
+          select: { name: true },
+        },
+      },
+    });
 
     res.status(200).json(result);
   })

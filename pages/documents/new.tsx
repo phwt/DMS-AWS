@@ -16,6 +16,7 @@ export const getServerSideProps = async (context) => {
 const DocumentNew = ({ serverUser }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("MANUAL");
+  const [department, setDepartment] = useState(1);
   const [detail, setDetail] = useState("");
   const [confidential, setConfidential] = useState(false);
   const [file, setFile] = useState<File>();
@@ -26,6 +27,7 @@ const DocumentNew = ({ serverUser }) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", name);
+    formData.append("department", department.toString());
     formData.append("type", type);
     formData.append("detail", detail);
     formData.append("confidential", confidential ? "1" : "0");
@@ -48,7 +50,7 @@ const DocumentNew = ({ serverUser }) => {
 
       <h2 className="pb-5">Document Creation Form</h2>
       <Form as={Row} encType="multipart/form-data">
-        <Col md={6}>
+        <Col md={12}>
           <Form.Label>Document Name</Form.Label>
           <Form.Control
             value={name}
@@ -56,7 +58,24 @@ const DocumentNew = ({ serverUser }) => {
           />
         </Col>
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
+          <Form.Label>Department</Form.Label>
+          <Form.Control
+            as="select"
+            custom
+            value={department}
+            onChange={({ target: { value } }) => setDepartment(parseInt(value))}
+          >
+            <option value={1}>R&D</option>
+            <option value={2}>Marketing</option>
+            <option value={3}>Human Resources</option>
+            <option value={4}>Public Relations</option>
+            <option value={5}>Finance</option>
+            <option value={6}>Sales</option>
+          </Form.Control>
+        </Col>
+
+        <Col md={6} className="mt-2">
           <Form.Label>Document Type</Form.Label>
           <Form.Control
             as="select"

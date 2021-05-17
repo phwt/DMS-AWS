@@ -47,6 +47,15 @@ export const documentTypeText = (type) => {
 
 const DocumentList = ({ documents }) => {
   const router = useRouter();
+  const departments = [
+    "-",
+    "R&D",
+    "Marketing",
+    "Human Resources",
+    "Public Relations",
+    "Finance",
+    "Sales",
+  ];
   const documentType = ["-", "MANUAL", "PROCEDURE", "WORK_INSTRUCTION", "FORM"];
   const documentState = [
     "-",
@@ -55,6 +64,7 @@ const DocumentList = ({ documents }) => {
     "OBSOLETE",
     "RECALLED",
   ];
+  const [departmentSelect, setDepartmentSelect] = useState("-");
   const [typeSelect, setTypeSelect] = useState("-");
   const [stateSelect, setStateSelect] = useState("-");
 
@@ -108,6 +118,7 @@ const DocumentList = ({ documents }) => {
           <thead className="bg-0">
             <tr>
               <th scope="col">Name</th>
+              <th scope="col">Department</th>
               <th scope="col">Type</th>
               <th scope="col">State</th>
               <th />
@@ -116,6 +127,17 @@ const DocumentList = ({ documents }) => {
           <tbody>
             <tr>
               <td />
+              <td>
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  onChange={(e) => setDepartmentSelect(e.target.value)}
+                >
+                  {departments.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </Form.Control>
+              </td>
               <td>
                 <Form.Control
                   as="select"
@@ -142,6 +164,11 @@ const DocumentList = ({ documents }) => {
             </tr>
 
             {documents
+              .filter(
+                (d) =>
+                  d.department.name === departmentSelect ||
+                  departmentSelect === "-"
+              )
               .filter((d) => d.type === typeSelect || typeSelect === "-")
               .filter((d) => d.state === stateSelect || stateSelect === "-")
               .map((document) => (
@@ -152,6 +179,7 @@ const DocumentList = ({ documents }) => {
                       <i className="ml-2 fa fa-lock text-danger" />
                     )}
                   </td>
+                  <td>{document.department.name}</td>
                   <td>{documentTypeText(document.type)}</td>
                   <td>
                     <DocumentStateBadge state={document.state} />
