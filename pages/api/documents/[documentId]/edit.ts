@@ -26,6 +26,7 @@ handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
           type: editDocument.type,
           state: "IN_PROGRESS",
           fileLocation: S3URLtoFileName(req.files[0].location),
+          departmentId: editDocument.departmentId,
         },
       },
     },
