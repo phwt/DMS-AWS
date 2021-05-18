@@ -36,10 +36,10 @@ const WorksTable = ({ works, user, ownWork = false }: Props) => {
           ? // Show only works created by current user
             w.create_by === user.user.name ||
             // If user is DCC also show other works in REVIEW state
-            (user.groups.filter((i) =>
-              ["DCC", "MR", "VP", "SVP"].includes(i)
-            ) &&
-              w.state === "REVIEW")
+            Boolean(
+              user.groups.filter((i) => ["DCC", "MR", "VP", "SVP"].includes(i))
+                .length && w.state === "REVIEW"
+            )
           : true)
       );
     },

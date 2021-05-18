@@ -197,8 +197,10 @@ const Work = ({ work, serverUser }) => {
           </Row>
         </Col>
         {work.state === "REVIEW" &&
-          serverUser.groups.filter((i) =>
-            ["DCC", "MR", "VP", "SVP"].includes(i)
+          Boolean(
+            serverUser.groups.filter((i) =>
+              ["DCC", "MR", "VP", "SVP"].includes(i)
+            ).length
           ) && (
             <Col>
               <ActionCard header="Review Actions">
