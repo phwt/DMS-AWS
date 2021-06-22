@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Document Management System
 
-## Getting Started
+Original [Document Management System](https://github.com/phwt/DMS) (Django, JavaScript) rewritten in React / Next.js and deployed on AWS
 
-First, run the development server:
+A large organization is made up of numerous departments. Each department is responsible for storing its own documents, resulting in a large number of documents in the organization. As a result, document management and standardization become more complex, because each department has its own document management process, as well as its own document standard. Document Management System will function as a centralized system, streamlining the document management process.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![dashboard-crop](https://user-images.githubusercontent.com/28344318/122898292-f5e49f00-d374-11eb-9dd7-157f2ebe67e3.jpeg)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Objectives
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- Streamlining the document management process (create, edit, cancel)
+- Maintaining single document standards throughout the organization
+- Easing employee document retrieval and management
+- Centralizing system for use by all departments in the organization
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Technology used
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- **Development**
+  - [React](https://reactjs.org/)
+    - [Next.js](https://nextjs.org/)
+    - [NextAuth](https://next-auth.js.org/)
+    - [React Bootstrap](https://react-bootstrap.github.io/)
+    - [next-connect](https://github.com/hoangvvo/next-connect)
+  - [Prisma](https://www.prisma.io/)
+  - [TypeScript](http://typescriptlang.org/)
+- **Deployment**
+  - [Amazon Web Services](https://aws.amazon.com/)
+    - Elastic Container Service (ECS)
+    - Elastic Container Registry (ECR)
+    - Simple Storage Services (S3)
+    - Relational Database Service (RDS)
+    - Application Load Balancer (ALB)
+    - Cognito
+  - [Docker](https://www.docker.com/)
+  - [Terraform](https://www.terraform.io/)
 
-## Learn More
+## Development setup
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Create `.env` file from [`.env.example`](https://github.com/phwt/DMS-AWS/blob/main/.env.example)
+2. Install required dependencies
+   ```zsh
+   npm install
+   ```
+3. Start development server
+   ```zsh
+   npm run dev
+   ```
