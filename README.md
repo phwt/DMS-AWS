@@ -5,6 +5,7 @@ Original [Document Management System](https://github.com/phwt/DMS) (Django, Java
 A large organization is made up of numerous departments. Each department is responsible for storing its own documents, resulting in a large number of documents in the organization. As a result, document management and standardization become more complex, because each department has its own document management process, as well as its own document standard. Document Management System will function as a centralized system, streamlining the document management process.
 
 ![dashboard-crop](https://user-images.githubusercontent.com/28344318/122898292-f5e49f00-d374-11eb-9dd7-157f2ebe67e3.jpeg)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fphwt%2FDMS-AWS.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fphwt%2FDMS-AWS?ref=badge_shield)
 
 ## Objectives
 
@@ -45,3 +46,7 @@ A large organization is made up of numerous departments. Each department is resp
    ```zsh
    npm run dev
    ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fphwt%2FDMS-AWS.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fphwt%2FDMS-AWS?ref=badge_large)
