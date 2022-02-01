@@ -25,14 +25,43 @@ A large organization is made up of numerous departments. Each department is resp
   - [TypeScript](http://typescriptlang.org/)
 - **Deployment**
   - [Amazon Web Services](https://aws.amazon.com/)
-    - Elastic Container Service (ECS)
-    - Elastic Container Registry (ECR)
-    - Simple Storage Services (S3)
-    - Relational Database Service (RDS)
-    - Application Load Balancer (ALB)
-    - Cognito
   - [Docker](https://www.docker.com/)
   - [Terraform](https://www.terraform.io/)
+
+## Cloud Architecture
+
+### Overview
+
+![AWS-Overview](https://user-images.githubusercontent.com/28344318/152000076-3c23140b-986c-4611-8b5f-0858d3738805.jpg)
+
+- **Compute**
+  - Elastic Container Service (ECS) for hosting the Document Management System
+  - Elastic Container Registry (ECR) for storing application's images.
+- **Database**
+  - Relational Database Service (RDS) with MySQL 8.0 for storing application's transactional data such as document's metadata, approval process delegation status, etc.
+- **Storage**
+  - Simple Storage Services (S3) for storing documents managed by the system.
+- **Security, Identity and Compliance**
+  - Cognito as identity and access management for the application.
+- **Networking**
+  - Deployed in single region within 2 availability zones
+- **Load Balance**
+  - Application Load Balancer (ALB) to distribute loads to each ECS task running in each Availability Zone.
+- **Developer Tools**
+  - EC2 as a bastion host to access the resources inside the private subnet using SSH tunneling.
+  - S3 for storing Terraform's state used to provision the resources.
+
+### Networking Overview
+
+![AWS-Network-Overview](https://user-images.githubusercontent.com/28344318/152000058-10847898-de07-4fc3-81ea-a5b65aeff105.jpg)
+
+- Virtual Private Cloud (VPC) with 2 subnets in each availability zone (total of 4 subnets
+  - Public subnet: Application Load Balancer and NAT Gateway
+  - Private subnet: ECS task and RDS database
+
+### Application Load Balancer
+
+![AWS-ALB](https://user-images.githubusercontent.com/28344318/152000048-61af80de-b9dd-4359-a227-41adfcb27a1c.png)
 
 ## Development setup
 
