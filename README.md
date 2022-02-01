@@ -34,6 +34,20 @@ A large organization is made up of numerous departments. Each department is resp
   - [Docker](https://www.docker.com/)
   - [Terraform](https://www.terraform.io/)
 
+## Cloud Architecture
+
+### Overview
+
+![AWS-Overview](https://user-images.githubusercontent.com/28344318/152000076-3c23140b-986c-4611-8b5f-0858d3738805.jpg)
+
+### Networking Overview
+
+![AWS-Network-Overview](https://user-images.githubusercontent.com/28344318/152000058-10847898-de07-4fc3-81ea-a5b65aeff105.jpg)
+
+### Application Load Balancer
+
+![AWS-ALB](https://user-images.githubusercontent.com/28344318/152000048-61af80de-b9dd-4359-a227-41adfcb27a1c.png)
+
 ## Development setup
 
 1. Create `.env` file from [`.env.example`](https://github.com/phwt/DMS-AWS/blob/main/.env.example)
