@@ -55,6 +55,10 @@ A large organization is made up of numerous departments. Each department is resp
 
 ![AWS-Network-Overview](https://user-images.githubusercontent.com/28344318/152000058-10847898-de07-4fc3-81ea-a5b65aeff105.jpg)
 
+- Virtual Private Cloud (VPC) with 2 subnets in each availability zone (total of 4 subnets
+  - Public subnet: Application Load Balancer and NAT Gateway
+  - Private subnet: ECS task and RDS database
+
 ### Application Load Balancer
 
 ![AWS-ALB](https://user-images.githubusercontent.com/28344318/152000048-61af80de-b9dd-4359-a227-41adfcb27a1c.png)
